@@ -163,7 +163,7 @@ func _ready():
 	add_child(l[0])
 	dictMaze[31]=l
 	
-	l=creerCellule(18,0,[1,1,0,0,1],[0,0,0,0,34],[-1,-1,33,25])
+	l=creerCellule(18,0,[1,1,0,0,1],[0,0,0,0,34],[-1,41,33,25])
 	add_child(l[0])
 	dictMaze[32]=l
 	
@@ -198,6 +198,154 @@ func _ready():
 	l=creerCellule(22,4,[1,1,1,0,1],[31,32,33,0,34],[-1,-1,-1,39])
 	add_child(l[0])
 	dictMaze[40]=l
+	
+	l=creerCellule(20, 0, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 42, -1, 32])
+	add_child(l[0])
+	dictMaze[41] = l
+
+	l=creerCellule(22, 0, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 43, -1, 41])
+	add_child(l[0])
+	dictMaze[42] = l
+
+	l=creerCellule(24, 0, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 44, -1, 42])
+	add_child(l[0])
+	dictMaze[43] = l
+
+	l=creerCellule(26, 0, [0, 0, 1, 0, 1], [0, 0, 0, 0, 34], [45, 53, -1, 43])
+	add_child(l[0])
+	dictMaze[44] = l
+
+	l=creerCellule(26, -2, [0, 1, 0, 1, 1], [0, 0, 0, 0, 34], [46, -1, 44, -1])
+	add_child(l[0])
+	dictMaze[45] = l
+
+	l=creerCellule(26, -4, [0, 0, 0, 0, 1], [0, 0, 0, 0, 34], [47, 51, 45, 50])
+	add_child(l[0])
+	dictMaze[46] = l
+
+	l=creerCellule(26, -6, [0, 1, 0, 1, 1], [0, 0, 0, 0, 34], [48, -1, 46, -1])
+	add_child(l[0])
+	dictMaze[47] = l
+
+	l=creerCellule(26, -8, [1, 1, 0, 1, 1], [0, 0, 0, 0, 34], [-1, -1, 47, -1])
+	add_child(l[0])
+	dictMaze[48] = l
+
+	l=creerCellule(22, -4, [1, 0, 1, 1, 1], [0, 0, 0, 0, 34], [-1, 50, -1, -1])
+	add_child(l[0])
+	dictMaze[49] = l
+
+	l=creerCellule(24, -4, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 46, -1, 49])
+	add_child(l[0])
+	dictMaze[50] = l
+
+	l=creerCellule(28, -4, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 52, -1, 46])
+	add_child(l[0])
+	dictMaze[51] = l
+
+	l=creerCellule(30, -4, [1, 1, 1, 0, 1], [0, 0, 0, 0, 34], [-1, -1, -1, 51])
+	add_child(l[0])
+	dictMaze[52] = l
+
+	l=creerCellule(28, 0, [1, 0, 0, 0, 1], [0, 0, 0, 0, 34], [-1, 60, 54, 44])
+	add_child(l[0])
+	dictMaze[53] = l
+
+	l=creerCellule(28, 2, [0, 1, 0, 1, 1], [0, 0, 0, 0, 34], [53, -1, 55, -1])
+	add_child(l[0])
+	dictMaze[54] = l
+
+	l=creerCellule(28, 4, [0, 0, 1, 0, 1], [0, 0, 0, 0, 34], [54, 58, -1, 56])
+	add_child(l[0])
+	dictMaze[55] = l
+
+	l=creerCellule(26, 4, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 55, -1, 57])
+	add_child(l[0])
+	dictMaze[56] = l
+
+	l=creerCellule(24, 4, [1, 0, 1, 1, 1], [0, 0, 0, 0, 34], [-1, 56, -1, -1])
+	add_child(l[0])
+	dictMaze[57] = l
+
+	l=creerCellule(30, 4, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 59, -1, 55])
+	add_child(l[0])
+	dictMaze[58] = l
+
+	l=creerCellule(32, 4, [1, 1, 1, 0, 1], [0, 0, 0, 0, 34], [-1, -1, -1, 58])
+	add_child(l[0])
+	dictMaze[59] = l
+
+	l=creerCellule(30, 0, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 61, -1, 53])
+	add_child(l[0])
+	dictMaze[60] = l
+
+	l=creerCellule(32, 0, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 62, -1, 60])
+	add_child(l[0])
+	dictMaze[61] = l
+
+	l=creerCellule(34, 0, [0, 0, 1, 0, 1], [0, 0, 0, 0, 34], [63, 65, -1, 61])
+	add_child(l[0])
+	dictMaze[62] = l
+
+	l=creerCellule(34, -2, [0, 1, 0, 1, 1], [0, 0, 0, 0, 34], [64, -1, 62, -1])
+	add_child(l[0])
+	dictMaze[63] = l
+
+	l=creerCellule(34, -4, [1, 1, 0, 1, 1], [0, 0, 0, 0, 34], [-1, -1, 63, -1])
+	add_child(l[0])
+	dictMaze[64] = l
+
+	l=creerCellule(36, 0, [1, 0, 1, 0, 1], [0, 0, 0, 0, 34], [-1, 66, -1, 62])
+	add_child(l[0])
+	dictMaze[65] = l
+
+	l=creerCellule(38, 0, [0, 0, 1, 0, 1], [0, 0, 0, 0, 34], [67, 73, -1, 65])
+	add_child(l[0])
+	dictMaze[66] = l
+
+	l=creerCellule(38, -2, [0, 1, 0, 1, 1], [0, 0, 0, 0, 34], [68, -1, 66, -1])
+	add_child(l[0])
+	dictMaze[67] = l
+
+	l=creerCellule(38, -4, [1, 0, 0, 1, 1], [0, 0, 0, 0, 34], [-1, 69, 67, -1])
+	add_child(l[0])
+	dictMaze[68] = l
+
+	l=creerCellule(40, -4, [0, 0, 1, 0, 1], [0, 0, 0, 0, 34], [70, 72, -1, 68])
+	add_child(l[0])
+	dictMaze[69] = l
+
+	l=creerCellule(40, -6, [0, 1, 0, 1, 1], [0, 0, 0, 0, 34], [71, -1, 69, -1])
+	add_child(l[0])
+	dictMaze[70] = l
+
+	l=creerCellule(40, -8, [1, 1, 0, 1, 1], [0, 0, 0, 0, 34], [-1, -1, 70, -1])
+	add_child(l[0])
+	dictMaze[71] = l
+
+	l=creerCellule(42, -4, [1, 1, 1, 0, 1], [0, 0, 0, 0, 34], [-1, -1, -1, 69])
+	add_child(l[0])
+	dictMaze[72] = l
+
+	l=creerCellule(40, 0, [1, 1, 0, 0, 1], [0, 0, 0, 0, 34], [-1, -1, 74, 66])
+	add_child(l[0])
+	dictMaze[73] = l
+
+	l=creerCellule(40, 2, [0, 1, 0, 1, 1], [0, 0, 0, 0, 34], [73, -1, 75, -1])
+	add_child(l[0])
+	dictMaze[74] = l
+
+	l=creerCellule(40, 4, [0, 0, 1, 0, 1], [0, 0, 0, 0, 34], [74, 77, -1, 76])
+	add_child(l[0])
+	dictMaze[75] = l
+
+	l=creerCellule(38, 4, [1, 0, 1, 1, 1], [0, 0, 0, 0, 34], [-1, 75, -1, -1])
+	add_child(l[0])
+	dictMaze[76] = l
+
+	l=creerCellule(42, 4, [1, 1, 1, 0, 1], [0, 0, 0, 0, 34], [-1, -1, -1, 75])
+	add_child(l[0])
+	dictMaze[77] = l
 
 	server = UDPServer.new()
 	peers = []
