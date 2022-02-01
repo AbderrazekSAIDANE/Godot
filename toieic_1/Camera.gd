@@ -13,6 +13,13 @@ var rotation_left_pressed
 var rotation_right_pressed
 var up_pressed
 var down_pressed
+var dictMazeFlag
+var posCamera 
+var posForward
+var posBackward
+var posDictL
+var posDictR
+var lDictMaze
 
 
 
@@ -28,11 +35,22 @@ func _ready():
 	rotation_left_pressed = 0
 	up_pressed = 0
 	down_pressed = 0
+	dictMazeFlag = 0 
+	posCamera = 0 
+	posForward = 0
+	posDictL = {0:3, 2:1, 1:0, 3:2}
+	posDictR = {2:3, 0:1, 3:0, 1:2}
+	posBackward = 2
 	print(translation)
+
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if(dictMazeFlag == 0):
+		lDictMaze = get_node(".").get_parent().getDictMaze()
+		dictMazeFlag = 1 
+		print(lDictMaze)
 	pass
 	
 func get_dir():
@@ -142,27 +160,37 @@ func _input(ev):
 	# That's why we use "not ev.echo" condition to avoid this case
 	 
 	if ev is InputEventKey and ev.scancode == KEY_LEFT and not ev.echo and left_pressed==0:
+		#print("lDict ", lDictMaze[posCamera][5][3])
 		turn_left()
+		posForward = posDictL[posForward]
+		posBackward = posDictL[posBackward]
 		left_pressed=1
 	elif ev is InputEventKey and ev.scancode == KEY_LEFT and not ev.echo and left_pressed==1:
 		left_pressed=0
 
 	if ev is InputEventKey and ev.scancode == KEY_RIGHT and not ev.echo and right_pressed==0:
 		turn_right()
+		posForward = posDictR[posForward]
+		posBackward = posDictR[posBackward]
 		right_pressed=1
+			
 	elif ev is InputEventKey and ev.scancode == KEY_RIGHT and not ev.echo and right_pressed==1:
 		right_pressed=0
 
 	if ev is InputEventKey and ev.scancode == KEY_UP and not ev.echo and forward_pressed==0:
-		forward()
-		forward_pressed=1
+		if(lDictMaze[posCamera][5][posForward] != -1):	
+			forward()
+			forward_pressed=1
+			posCamera = lDictMaze[posCamera][5][posForward]
 		print(dir)
 	elif ev is InputEventKey and ev.scancode == KEY_UP and not ev.echo and forward_pressed==1:
 		forward_pressed=0
 
 	if ev is InputEventKey and ev.scancode == KEY_DOWN and not ev.echo and backward_pressed==0:
-		backward()
-		backward_pressed=1
+		if(lDictMaze[posCamera][5][posBackward] != -1):	
+			backward()
+			backward_pressed=1
+			posCamera = lDictMaze[posCamera][5][posBackward]
 		print(dir)
 	elif ev is InputEventKey and ev.scancode == KEY_DOWN and not ev.echo and backward_pressed==1:
 		backward_pressed=0
@@ -191,3 +219,4 @@ func _input(ev):
 	elif ev is InputEventKey and ev.scancode == KEY_S and not ev.echo and down_pressed==1:
 		down_pressed = 0
 	
+	print("posCamera = ",posCamera)
