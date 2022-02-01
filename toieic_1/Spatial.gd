@@ -425,8 +425,8 @@ func creerCellule(x,z,lWalls,lTextureNumbers,lDestinations):
 	n.add_child(nOuest)
 	
 	var miPoteauNO=MeshInstance.new()
-	miPoteauNO.scale=Vector3(0.05,1.0,0.05)
-	miPoteauNO.translation=Vector3(-0.95,0.0,-0.95)
+	miPoteauNO.scale=Vector3(0.01,1.0,0.01)
+	miPoteauNO.translation=Vector3(-0.99,0.0,-0.99)
 	var meshPoteauNO=CubeMesh.new()
 	miPoteauNO.mesh=meshPoteauNO
 	var matPoteauNO=SpatialMaterial.new()
@@ -435,8 +435,8 @@ func creerCellule(x,z,lWalls,lTextureNumbers,lDestinations):
 	n.add_child(miPoteauNO)
 
 	var miPoteauNE=MeshInstance.new()
-	miPoteauNE.scale=Vector3(0.05,1.0,0.05)
-	miPoteauNE.translation=Vector3(0.95,0.0,-0.95)
+	miPoteauNE.scale=Vector3(0.01,1.0,0.01)
+	miPoteauNE.translation=Vector3(0.99,0.0,-0.99)
 	var meshPoteauNE=CubeMesh.new()
 	miPoteauNE.mesh=meshPoteauNE
 	var matPoteauNE=SpatialMaterial.new()
@@ -445,8 +445,8 @@ func creerCellule(x,z,lWalls,lTextureNumbers,lDestinations):
 	n.add_child(miPoteauNE)
 
 	var miPoteauSE=MeshInstance.new()
-	miPoteauSE.scale=Vector3(0.05,1.0,0.05)
-	miPoteauSE.translation=Vector3(0.95,0.0,0.95)
+	miPoteauSE.scale=Vector3(0.01,1.0,0.01)
+	miPoteauSE.translation=Vector3(0.99,0.0,0.99)
 	var meshPoteauSE=CubeMesh.new()
 	miPoteauSE.mesh=meshPoteauSE
 	var matPoteauSE=SpatialMaterial.new()
@@ -455,8 +455,8 @@ func creerCellule(x,z,lWalls,lTextureNumbers,lDestinations):
 	n.add_child(miPoteauSE)
 
 	var miPoteauSO=MeshInstance.new()
-	miPoteauSO.scale=Vector3(0.05,1.0,0.05)
-	miPoteauSO.translation=Vector3(-0.95,0.0,0.95)
+	miPoteauSO.scale=Vector3(0.01,1.0,0.01)
+	miPoteauSO.translation=Vector3(-0.99,0.0,0.99)
 	var meshPoteauSO=CubeMesh.new()
 	miPoteauSO.mesh=meshPoteauSE
 	var matPoteauSO=SpatialMaterial.new()
