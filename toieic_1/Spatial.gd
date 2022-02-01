@@ -163,7 +163,7 @@ func _ready():
 	add_child(l[0])
 	dictMaze[31]=l
 	
-	l=creerCellule(18,0,[1,1,0,0,1],[0,0,0,0,34],[-1,41,33,25])
+	l=creerCellule(18,0,[1,0,0,0,1],[0,0,0,0,34],[-1,41,33,25])
 	add_child(l[0])
 	dictMaze[32]=l
 	
