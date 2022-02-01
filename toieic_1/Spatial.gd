@@ -43,11 +43,11 @@ func _ready():
 	add_child(l[0])
 	dictMaze[1]=l
 	
-	l=creerCellule(4,0,[0,0,1,0,1],[0,0,0,0,34],[3,12,-1,1])
+	l=creerCellule(4,0,[0,0,1,0,1],[0,0,0,0,35],[3,12,-1,1])
 	add_child(l[0])
 	dictMaze[2]=l
 	
-	l=creerCellule(4,-2,[0,1,0,1,1],[0,0,0,0,34],[4,-1,2,-1])
+	l=creerCellule(4,-2,[0,1,0,1,1],[0,35,0,0,34],[4,-1,2,-1])
 	add_child(l[0])
 	dictMaze[3]=l
 	
@@ -83,7 +83,7 @@ func _ready():
 	add_child(l[0])
 	dictMaze[11]=l
 	
-	l=creerCellule(6,0,[1,0,0,0,1],[0,0,0,0,34],[-1,19,13,2])
+	l=creerCellule(6,0,[1,0,0,0,1],[0,0,0,0,36],[-1,19,13,2])
 	add_child(l[0])
 	dictMaze[12]=l
 	
@@ -374,6 +374,14 @@ func chargerTextures():
 	it.load("res://textures_mur/bitume.jpg")
 	lTextures_mur.append(it)
 	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/NY.jpg")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/LV.jpg")
+	lTextures_mur.append(it)
+	
 	print("Textures chargées")
 
 func chargerSons():
@@ -499,7 +507,7 @@ func creerCellule(x,z,lWalls,lTextureNumbers,lDestinations):
 		
 	if(lWalls[4] == 1):
 		var miRoute = MeshInstance.new()
-		miRoute.rotation = Vector3(0.0,0.0,0.0)
+		miRoute.rotation = Vector3(0.0,-PI/2,0.0)
 		var meshRoute = PlaneMesh.new()
 		miRoute.mesh = meshRoute
 		var matRoute = SpatialMaterial.new()
