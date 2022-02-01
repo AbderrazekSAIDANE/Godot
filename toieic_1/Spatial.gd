@@ -35,169 +35,169 @@ func _ready():
 	#
 	#
 	#                      murs      textures  desinations
-	var l=creerCellule(0, 0, [1, 0, 1, 1], [0, 0, 0, 0], [-1, 1, -1, -1])
+	var l=creerCellule(0,0,[1,0,1,1],[0,0,0,0],[-1,1,-1,-1])
 	add_child(l[0])
-	dictMaze[0] = l
-
-	l=creerCellule(2, 0, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 2, -1, 0])
+	dictMaze[0]=l
+	
+	l=creerCellule(2,0,[1,0,1,0],[0,0,0,0],[-1,2,-1,0])
 	add_child(l[0])
-	dictMaze[1] = l
-
-	l=creerCellule(4, 0, [0, 0, 1, 0], [0, 0, 0, 0], [3, 12, -1, 1])
+	dictMaze[1]=l
+	
+	l=creerCellule(4,0,[0,0,1,0],[0,0,0,0],[3,12,-1,1])
 	add_child(l[0])
-	dictMaze[2] = l
-
-	l=creerCellule(4, -2, [0, 1, 0, 1], [0, 0, 0, 0], [4, -1, 2, -1])
+	dictMaze[2]=l
+	
+	l=creerCellule(4,-2,[0,1,0,1],[0,0,0,0],[4,-1,2,-1])
 	add_child(l[0])
-	dictMaze[3] = l
-
-	l=creerCellule(4, -4, [0, 0, 0, 0], [0, 0, 0, 0], [7, 9, 3, 5])
+	dictMaze[3]=l
+	
+	l=creerCellule(4,-4,[0,0,0,0],[0,0,0,0],[7,9,3,5])
 	add_child(l[0])
-	dictMaze[4] = l
-
-	l=creerCellule(2, -4, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 4, -1, 6])
+	dictMaze[4]=l
+	
+	l=creerCellule(2,-4,[1,0,1,0],[0,0,0,0],[-1,4,-1,6])
 	add_child(l[0])
-	dictMaze[5] = l
-
-	l=creerCellule(0, -4, [1, 0, 1, 1], [0, 0, 0, 0], [-1, 5, -1, -1])
+	dictMaze[5]=l
+	
+	l=creerCellule(0,-4,[1,0,1,1],[1,0,2,3],[-1,5,-1,-1])
 	add_child(l[0])
-	dictMaze[6] = l
-
-	l=creerCellule(4, -6, [0, 1, 0, 1], [0, 0, 0, 0], [8, -1, 4, -1])
+	dictMaze[6]=l
+	
+	l=creerCellule(4,-6,[0,1,0,1],[0,0,0,0],[8,-1,4,-1])
 	add_child(l[0])
-	dictMaze[7] = l
-
-	l=creerCellule(4, -8, [1, 1, 0, 1], [0, 0, 0, 0], [-1, -1, 7, -1])
+	dictMaze[7]=l
+	
+	l=creerCellule(4,-8,[1,1,0,1],[4,5,0,6],[-1,-1,7,-1])
 	add_child(l[0])
-	dictMaze[8] = l
-
-	l=creerCellule(6, -4, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 10, -1, 4])
+	dictMaze[8]=l
+	
+	l=creerCellule(6,-4,[1,0,1,0],[0,0,0,0],[-1,10,-1,4])
 	add_child(l[0])
-	dictMaze[9] = l
-
-	l=creerCellule(8, -4, [0, 1, 1, 0], [0, 0, 0, 0], [11, -1, -1, 9])
+	dictMaze[9]=l
+	
+	l=creerCellule(8,-4,[0,1,1,0],[0,0,0,0],[11,-1,-1,9])
 	add_child(l[0])
-	dictMaze[10] = l
-
-	l=creerCellule(8, -6, [1, 1, 0, 1], [0, 0, 0, 0], [-1, -1, 10, -1])
+	dictMaze[10]=l
+	
+	l=creerCellule(8,-6,[1,1,0,1],[7,8,0,9],[-1,-1,10,-1])
 	add_child(l[0])
-	dictMaze[11] = l
-
-	l=creerCellule(6, 0, [1, 0, 0, 0], [0, 0, 0, 0], [-1, 19, 13, 2])
+	dictMaze[11]=l
+	
+	l=creerCellule(6,0,[1,0,0,0],[0,0,0,0],[-1,19,13,2])
 	add_child(l[0])
-	dictMaze[12] = l
-
-	l=creerCellule(6, 2, [0, 1, 0, 1], [0, 0, 0, 0], [12, -1, 14, -1])
+	dictMaze[12]=l
+	
+	l=creerCellule(6,2,[0,1,0,1],[0,0,0,0],[12,-1,14,-1])
 	add_child(l[0])
-	dictMaze[13] = l
-
-	l=creerCellule(6, 4, [0, 0, 1, 0], [0, 0, 0, 0], [13, 17, -1, 15])
+	dictMaze[13]=l
+	
+	l=creerCellule(6,4,[0,0,1,0],[0,0,0,0],[13,17,-1,15])
 	add_child(l[0])
-	dictMaze[14] = l
-
-	l=creerCellule(4, 4, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 14, -1, 16])
+	dictMaze[14]=l
+	
+	l=creerCellule(4,4,[1,0,1,0],[0,0,0,0],[-1,14,-1,16])
 	add_child(l[0])
-	dictMaze[15] = l
-
-	l=creerCellule(2, 4, [1, 0, 1, 1], [0, 0, 0, 0], [-1, 15, -1, -1])
+	dictMaze[15]=l
+	
+	l=creerCellule(2,4,[1,0,1,1],[10,0,11,12],[-1,15,-1,-1])
 	add_child(l[0])
-	dictMaze[16] = l
-
-	l=creerCellule(8, 4, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 18, -1, 14])
+	dictMaze[16]=l
+	
+	l=creerCellule(8,4,[1,0,1,0],[0,0,0,0],[-1,18,-1,14])
 	add_child(l[0])
-	dictMaze[17] = l
-
-	l=creerCellule(10, 4, [1, 1, 1, 0], [0, 0, 0, 0], [-1, -1, -1, 17])
+	dictMaze[17]=l
+	
+	l=creerCellule(10,4,[1,1,1,0],[13,14,15,0],[-1,-1,-1,17])
 	add_child(l[0])
-	dictMaze[18] = l
-
-	l=creerCellule(8, 0, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 20, -1, 12])
+	dictMaze[18]=l
+	
+	l=creerCellule(8,0,[1,0,1,0],[0,0,0,0],[-1,20,-1,12])
 	add_child(l[0])
-	dictMaze[19] = l
-
-	l=creerCellule(10, 0, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 21, -1, 19])
+	dictMaze[19]=l
+	
+	l=creerCellule(10,0,[1,0,1,0],[0,0,0,0],[-1,21,-1,19])
 	add_child(l[0])
-	dictMaze[20] = l
-
-	l=creerCellule(12, 0, [0, 0, 1, 0], [0, 0, 0, 0], [22, 24, -1, 20])
+	dictMaze[20]=l
+	
+	l=creerCellule(12,0,[0,0,1,0],[0,0,0,0],[22,24,-1,20])
 	add_child(l[0])
-	dictMaze[21] = l
-
-	l=creerCellule(12, -2, [0, 1, 0, 1], [0, 0, 0, 0], [23, -1, 21, -1])
+	dictMaze[21]=l
+	
+	l=creerCellule(12,-2,[0,1,0,1],[0,0,0,0],[23,-1,21,-1])
 	add_child(l[0])
-	dictMaze[22] = l
-
-	l=creerCellule(12, -4, [1, 1, 0, 1], [0, 0, 0, 0], [-1, -1, 22, -1])
+	dictMaze[22]=l
+	
+	l=creerCellule(12,-4,[1,1,0,1],[16,17,0,18],[-1,-1,22,-1])
 	add_child(l[0])
-	dictMaze[23] = l
-
-	l=creerCellule(14, 0, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 25, -1, 21])
+	dictMaze[23]=l
+	
+	l=creerCellule(14,0,[1,0,1,0],[0,0,0,0],[-1,25,-1,21])
 	add_child(l[0])
-	dictMaze[24] = l
-
-	l=creerCellule(16, 0, [0, 0, 1, 0], [0, 0, 0, 0], [26, 32, -1, 24])
+	dictMaze[24]=l
+	
+	l=creerCellule(16,0,[0,0,1,0],[0,0,0,0],[26,32,-1,24])
 	add_child(l[0])
-	dictMaze[25] = l
-
-	l=creerCellule(16, -2, [0, 1, 0, 1], [0, 0, 0, 0], [27, -1, 25, -1])
+	dictMaze[25]=l
+	
+	l=creerCellule(16,-2,[0,1,0,1],[0,0,0,0],[27,-1,25,-1])
 	add_child(l[0])
-	dictMaze[26] = l
-
-	l=creerCellule(16, -4, [1, 0, 0, 1], [0, 0, 0, 0], [-1, 28, 26, -1])
+	dictMaze[26]=l
+	
+	l=creerCellule(16,-4,[1,0,0,1],[0,0,0,0],[-1,28,26,-1])
 	add_child(l[0])
-	dictMaze[27] = l
-
-	l=creerCellule(18, -4, [0, 0, 1, 0], [0, 0, 0, 0], [30, 29, -1, 27])
+	dictMaze[27]=l
+	
+	l=creerCellule(18,-4,[0,0,1,0],[0,0,0,0],[30,29,-1,27])
 	add_child(l[0])
-	dictMaze[28] = l
-
-	l=creerCellule(20, -4, [1, 1, 1, 0], [0, 0, 0, 0], [-1, -1, -1, 28])
+	dictMaze[28]=l
+	
+	l=creerCellule(20,-4,[1,1,1,0],[19,20,21,0],[-1,-1,-1,28])
 	add_child(l[0])
-	dictMaze[29] = l
-
-	l=creerCellule(18, -6, [0, 1, 0, 1], [0, 0, 0, 0], [31, -1, 28, -1])
+	dictMaze[29]=l
+	
+	l=creerCellule(18,-6,[0,1,0,1],[0,0,0,0],[31,-1,28,-1])
 	add_child(l[0])
-	dictMaze[30] = l
-
-	l=creerCellule(18, -8, [1, 1, 0, 1], [0, 0, 0, 0], [-1, -1, 30, -1])
+	dictMaze[30]=l
+	
+	l=creerCellule(18,-8,[1,1,0,1],[22,23,0,24],[-1,-1,30,-1])
 	add_child(l[0])
-	dictMaze[31] = l
-
-	l=creerCellule(18, 0, [1, 1, 0, 0], [0, 0, 0, 0], [-1, -1, 33, 25])
+	dictMaze[31]=l
+	
+	l=creerCellule(18,0,[1,1,0,0],[0,0,0,0],[-1,-1,33,25])
 	add_child(l[0])
-	dictMaze[32] = l
-
-	l=creerCellule(18, 2, [0, 1, 0, 1], [0, 0, 0, 0], [32, -1, 34, -1])
+	dictMaze[32]=l
+	
+	l=creerCellule(18,2,[0,1,0,1],[0,0,0,0],[32,-1,34,-1])
 	add_child(l[0])
-	dictMaze[33] = l
-
-	l=creerCellule(18, 4, [0, 0, 0, 0], [0, 0, 0, 0], [33, 39, 35, 37])
+	dictMaze[33]=l
+	
+	l=creerCellule(18,4,[0,0,0,0],[0,0,0,0],[33,39,35,37])
 	add_child(l[0])
-	dictMaze[34] = l
-
-	l=creerCellule(18, 6, [0, 1, 0, 1], [0, 0, 0, 0], [34, -1, 36, -1])
+	dictMaze[34]=l
+	
+	l=creerCellule(18,6,[0,1,0,1],[0,0,0,0],[34,-1,36,-1])
 	add_child(l[0])
-	dictMaze[35] = l
-
-	l=creerCellule(18, 8, [0, 1, 1, 1], [0, 0, 0, 0], [35, -1, -1, -1])
+	dictMaze[35]=l
+	
+	l=creerCellule(18,8,[0,1,1,1],[0,25,26,27],[35,-1,-1,-1])
 	add_child(l[0])
-	dictMaze[36] = l
-
-	l=creerCellule(16, 4, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 34, -1, 38])
+	dictMaze[36]=l
+	
+	l=creerCellule(16,4,[1,0,1,0],[0,0,0,0],[-1,34,-1,38])
 	add_child(l[0])
-	dictMaze[37] = l
-
-	l=creerCellule(14, 4, [1, 0, 1, 1], [0, 0, 0, 0], [-1, 37, -1, -1])
+	dictMaze[37]=l
+	
+	l=creerCellule(14,4,[1,0,1,1],[28,0,29,30],[-1,37,-1,-1])
 	add_child(l[0])
-	dictMaze[38] = l
-
-	l=creerCellule(20, 4, [1, 0, 1, 0], [0, 0, 0, 0], [-1, 40, -1, 34])
+	dictMaze[38]=l
+	
+	l=creerCellule(20,4,[1,0,1,0],[0,0,0,0],[-1,40,-1,34])
 	add_child(l[0])
-	dictMaze[39] = l
-
-	l=creerCellule(22, 4, [1, 1, 1, 0], [0, 0, 0, 0], [-1, -1, -1, 39])
+	dictMaze[39]=l
+	
+	l=creerCellule(22,4,[1,1,1,0],[31,32,33,0],[-1,-1,-1,39])
 	add_child(l[0])
-	dictMaze[40] = l
+	dictMaze[40]=l
 
 	server = UDPServer.new()
 	peers = []
@@ -257,17 +257,138 @@ func _process(delta):
 
 func chargerTextures():
 	var it=ImageTexture.new()
-	it.load("res://textures_mur/brique1.jpg")
+	it.load("res://textures_mur/default.jpg")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/6_0.png")
 	lTextures_mur.append(it)
 	it=ImageTexture.new()
-	it.load("res://textures_mur/brique2.jpg")
+	it.load("res://textures_mur/6_2.png")
 	lTextures_mur.append(it)
 	it=ImageTexture.new()
-	it.load("res://textures_mur/brique3.jpg")
+	it.load("res://textures_mur/6_3.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/8_0.png")
 	lTextures_mur.append(it)
 	it=ImageTexture.new()
-	it.load("res://textures_mur/brique4.jpg")
+	it.load("res://textures_mur/8_1.png")
 	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/8_3.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/11_0.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/11_1.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/11_3.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/16_0.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/16_2.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/16_3.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/18_0.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/18_1.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/18_2.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/23_0.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/23_1.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/23_3.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/29_0.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/29_1.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/29_2.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/31_0.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/31_1.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/31_3.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/36_1.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/36_2.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/36_3.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/38_0.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/38_2.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/38_3.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/40_0.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/40_1.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/40_2.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/brique1.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/brique2.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/brique3.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/brique4.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/toureiffel2.png")
+	lTextures_mur.append(it)
+	it=ImageTexture.new()
+	it.load("res://textures_mur/toureiffel3.png")
+	lTextures_mur.append(it)
+	
 	print("Textures chargées")
 
 func chargerSons():
