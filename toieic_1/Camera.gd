@@ -132,7 +132,8 @@ func forward():
 		translation.x-=2
 
 	print (translation)
-
+	
+#------------- Get an overview on the labyrinth ----------------------#
 func up():
 	translation.y+=1
 	
@@ -144,14 +145,13 @@ func rotationRight():
 	
 func rotationLeft():
 	rotation_degrees.x -=90
-	
+#-------------------------------------------------------#
+
 # Called every time a button is pressed
 func _input(ev):
 	var tree=get_tree().get_root()
 	var asp=tree.get_node("Spatial/AudioStreamPlayer")
-	
-	print (asp)
-	
+
 	if (asp.playing==true):
 		return
 		
@@ -160,8 +160,9 @@ func _input(ev):
 	# That's why we use "not ev.echo" condition to avoid this case
 	 
 	if ev is InputEventKey and ev.scancode == KEY_LEFT and not ev.echo and left_pressed==0:
-		#print("lDict ", lDictMaze[posCamera][5][3])
 		turn_left()
+		# When the camera turns a change of frame is done
+		# We treat it with these two lines
 		posForward = posDictL[posForward]
 		posBackward = posDictL[posBackward]
 		left_pressed=1
@@ -170,28 +171,29 @@ func _input(ev):
 
 	if ev is InputEventKey and ev.scancode == KEY_RIGHT and not ev.echo and right_pressed==0:
 		turn_right()
+		# When the camera turns a change of frame is done
+		# We treat it with these two lines
 		posForward = posDictR[posForward]
 		posBackward = posDictR[posBackward]
 		right_pressed=1
-			
 	elif ev is InputEventKey and ev.scancode == KEY_RIGHT and not ev.echo and right_pressed==1:
 		right_pressed=0
 
 	if ev is InputEventKey and ev.scancode == KEY_UP and not ev.echo and forward_pressed==0:
+		# If there is no wall in this direction we can go forward 
 		if(lDictMaze[posCamera][5][posForward] != -1):	
 			forward()
 			forward_pressed=1
 			posCamera = lDictMaze[posCamera][5][posForward]
-		print(dir)
 	elif ev is InputEventKey and ev.scancode == KEY_UP and not ev.echo and forward_pressed==1:
 		forward_pressed=0
 
 	if ev is InputEventKey and ev.scancode == KEY_DOWN and not ev.echo and backward_pressed==0:
+		# If there is no wall in this direction we can go backward 
 		if(lDictMaze[posCamera][5][posBackward] != -1):	
 			backward()
 			backward_pressed=1
 			posCamera = lDictMaze[posCamera][5][posBackward]
-		print(dir)
 	elif ev is InputEventKey and ev.scancode == KEY_DOWN and not ev.echo and backward_pressed==1:
 		backward_pressed=0
 		
@@ -206,7 +208,7 @@ func _input(ev):
 		rotation_left_pressed = 1
 	elif ev is InputEventKey and ev.scancode == KEY_Q and not ev.echo and rotation_left_pressed==1:
 		rotation_left_pressed = 0
-		
+	
 	if ev is InputEventKey and ev.scancode == KEY_Z and not ev.echo and up_pressed==0:
 		up()
 		up_pressed = 1
