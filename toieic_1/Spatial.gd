@@ -1,18 +1,17 @@
 extends Spatial
 
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
 var client
 var server
 var muted
 var peers
 var lTextures_mur
 var lSons
-var dictMaze
+var dictMaze # Important : this variable contains all the information needed to identify and create the cells
 var pos
 var idxRecord
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,8 +31,6 @@ func _ready():
 	muted=0
 	#
 	#
-	#
-	#
 	#                      murs      textures  desinations
 	var l=creerCellule(0,0,[1,0,1,1,1],[0,0,0,0,34],[-1,1,-1,-1])
 	add_child(l[0])
@@ -47,7 +44,7 @@ func _ready():
 	add_child(l[0])
 	dictMaze[2]=l
 	
-	l=creerCellule(4,-2,[0,1,0,1,1],[0,35,0,0,34],[4,-1,2,-1])
+	l=creerCellule(4,-2,[0,1,0,1,1],[0,0,0,0,34],[4,-1,2,-1])
 	add_child(l[0])
 	dictMaze[3]=l
 	
@@ -55,7 +52,7 @@ func _ready():
 	add_child(l[0])
 	dictMaze[4]=l
 	
-	l=creerCellule(2,-4,[1,0,1,0,1],[0,0,0,0,34],[-1,4,-1,6])
+	l=creerCellule(2,-4,[1,0,1,0,1],[0,0,37,0,34],[-1,4,-1,6])
 	add_child(l[0])
 	dictMaze[5]=l
 	
@@ -83,7 +80,7 @@ func _ready():
 	add_child(l[0])
 	dictMaze[11]=l
 	
-	l=creerCellule(6,0,[1,0,0,0,1],[0,0,0,0,36],[-1,19,13,2])
+	l=creerCellule(6,0,[1,0,0,0,1],[0,0,0,0,34],[-1,19,13,2])
 	add_child(l[0])
 	dictMaze[12]=l
 	
@@ -346,27 +343,30 @@ func _ready():
 	l=creerCellule(42, 4, [1, 1, 1, 0, 1], [0, 0, 0, 0, 34], [-1, -1, -1, 75])
 	add_child(l[0])
 	dictMaze[77] = l
-
+	
+	# Creation of the server 
 	server = UDPServer.new()
 	peers = []
+	# The server will always listen on the port 4242 waiting for someting from his clients
 	server.listen(4242)
+	# Creation of the client
 	client= PacketPeerUDP.new()
-	pass # Replace with function body.
-
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
+	# if this condition is verified, everything that 
+	# the microphone picks up is taken into account to process the player's responses
 	if $AudioStreamPlayer.playing==false and muted==1:
 		client.connect_to_host("127.0.0.1", 4243)
 		client.put_packet("Unmute".to_utf8())
 		muted=0
 		return
 		
-	server.poll() # Important!
-	if server.is_connection_available():
-		var peer : PacketPeerUDP = server.take_connection()
-		var pkt = peer.get_packet()
+	server.poll() # Important! used to process new packets
+	if server.is_connection_available(): # If a packet with a new address/port combination was received on the socket.
+		var peer : PacketPeerUDP = server.take_connection() # Returns the first pending connection
+		var pkt = peer.get_packet() # Gets a raw packet
 		print("Accepted peer: %s:%s" % [peer.get_packet_ip(), peer.get_packet_port()])
 		var pktstr=pkt.get_string_from_utf8()
 		print(len(pktstr)," ",pktstr)
@@ -377,9 +377,11 @@ func _process(delta):
 			#	$Camera.backward()
 			if (pktstr[0]=='f'):
 				var l5=dictMaze[pos][5]
+				print(l5)
 				if l5[dir]>=0:
 					$Camera.forward()
 					pos=l5[dir]
+					print(pos)
 					$AudioStreamPlayer.stream=lSons[pos]
 				else:
 					$AudioStreamPlayer2.play()
@@ -401,8 +403,8 @@ func _process(delta):
 				print("Answer c")
 			elif (pktstr[0]=='d'):
 				print("Answer d")
-#	pass
 
+# Load all images for the environment in a list 
 func chargerTextures():
 	var it=ImageTexture.new()
 	it.load("res://textures_mur/default.jpg")
@@ -519,7 +521,7 @@ func chargerTextures():
 	lTextures_mur.append(it)
 	
 	it=ImageTexture.new()
-	it.load("res://textures_mur/bitume.jpg")
+	it.load("res://textures_mur/bitume.jpg") #34 
 	lTextures_mur.append(it)
 	
 	it=ImageTexture.new()
@@ -529,9 +531,14 @@ func chargerTextures():
 	it=ImageTexture.new()
 	it.load("res://textures_mur/LV.jpg")
 	lTextures_mur.append(it)
+
+	it=ImageTexture.new()
+	it.load("res://textures_mur/5_2.png")
+	lTextures_mur.append(it)
 	
 	print("Textures chargées")
-
+	
+# Load Sounds for questions and basics indications of toeic in a list 
 func chargerSons():
 	var s=load("res://sons/statement.wav")
 	lSons.append(s)
@@ -662,9 +669,6 @@ func creerCellule(x,z,lWalls,lTextureNumbers,lDestinations):
 		miRoute.set_surface_material(0,matRoute)
 		matRoute.albedo_texture=lTextures_mur[lTextureNumbers[4]]
 		route.add_child(miRoute)
-		
-		
-	
 	return [n,nNord,nEst,nSud,nOuest,lDestinations]
 	pass
 
