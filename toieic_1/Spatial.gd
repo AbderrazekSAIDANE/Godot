@@ -64,7 +64,7 @@ func _ready():
 	add_child(l[0])
 	dictMaze[7]=l
 	
-	l=creerCellule(4,-8,[1,1,0,1,1],[4,5,0,6,34],[-1,-1,7,-1])
+	l=creerCellule(4,-8,[1,1,0,1,1],[38,39,0,41,34],[-1,-1,7,-1])
 	add_child(l[0])
 	dictMaze[8]=l
 	
@@ -372,28 +372,27 @@ func _process(delta):
 		print(len(pktstr)," ",pktstr)
 		var dir=$Camera.get_dir()
 		print ("process=",dir)
-		if (len(pktstr)>0):
+		if (len(pktstr)>0): # If we detect something with speech recognition 
 			#if (pktstr[0]=='b'):
 			#	$Camera.backward()
+			# If the first letter is 'f' for 'forward' 
 			if (pktstr[0]=='f'):
 				var l5=dictMaze[pos][5]
-				print(l5)
 				if l5[dir]>=0:
 					$Camera.forward()
 					pos=l5[dir]
-					print(pos)
-					$AudioStreamPlayer.stream=lSons[pos]
+					$AudioStreamPlayer.stream=lSons[pos] # The AudioStream object to be played
 				else:
-					$AudioStreamPlayer2.play()
+					$AudioStreamPlayer2.play() # Play the audio stream
 					print("bonk")
-			if (pktstr[0]=='r'):
-				$Camera.turn_right()
-			elif (pktstr[0]=='l'):
-				$Camera.turn_left()
-			elif (pktstr[0]=='p'):
-				$AudioStreamPlayer.play()
-				client.connect_to_host("127.0.0.1", 4243)
-				client.put_packet("Mute".to_utf8())
+			if (pktstr[0]=='r'): # If the first letter is 'r' for 'right'
+				$Camera.turn_right() # Camera turn right 
+			elif (pktstr[0]=='l'): # If the first letter is 'l' for 'left'
+				$Camera.turn_left() # Camera turn left
+			elif (pktstr[0]=='p'): # If the first letter is 'p' for 'play'
+				$AudioStreamPlayer.play() # The stream is played
+				client.connect_to_host("127.0.0.1", 4243) # We connect to the server 
+				client.put_packet("Mute".to_utf8()) # And mute the microphone
 				muted=1
 			elif (pktstr[0]=='a'):
 				print("Answer a")
@@ -536,6 +535,22 @@ func chargerTextures():
 	it.load("res://textures_mur/5_2.png")
 	lTextures_mur.append(it)
 	
+	it=ImageTexture.new()	#38 
+	it.load("res://textures_mur/0_0.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/0_1.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/0_2.png")
+	lTextures_mur.append(it)
+	
+	it=ImageTexture.new()
+	it.load("res://textures_mur/0_3.png")
+	lTextures_mur.append(it)
+		
 	print("Textures chargées")
 	
 # Load Sounds for questions and basics indications of toeic in a list 
@@ -552,6 +567,14 @@ func chargerSons():
 	lSons.append(s)
 	print("Sons chargés")
 	
+# Create the cells
+# parameters : x, z, lTextureNumbers, lDestinations
+# x : x-axis position
+# z : z-axis position
+# lTexture Numbers : List of what pictures we should pick from folder textures_mur
+# lDestinations : List of which cell are next to the current cell
+# -1 if there is no cell on the target direction 
+
 func creerCellule(x,z,lWalls,lTextureNumbers,lDestinations):
 	var n=Spatial.new()
 	n.translate(Vector3(x,0.0,z))
