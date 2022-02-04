@@ -32,14 +32,12 @@ func _ready():
 	muted=0
 	#
 	#
-	#
-	#
 	#                      murs      textures  desinations
-	var l=creerCellule(0,0,[1,0,1,1,1],[0,0,0,0,34],[-1,1,-1,-1], 0)
+	var l=creerCellule(0,0,[1,1,1,1,1],[0,0,0,0,34],[-1,1,-1,-1], 0)
 	add_child(l[0])
 	dictMaze[0]=l
 	
-	l=creerCellule(2,0,[1,0,1,0,1],[0,0,0,0,34],[-1,2,-1,0], 1)
+	l=creerCellule(2,0,[1,1,1,0,1],[0,0,0,0,34],[-1,2,-1,0], 1)
 	add_child(l[0])
 	dictMaze[1]=l
 	
@@ -565,6 +563,7 @@ func chargerImageCellule(n, i):
 	var file2Check = File.new()
 	if(i == 34):
 		it.load("res://textures_mur/bitume.jpg")
+		
 	else:
 		if (file2Check.file_exists("res://textures_mur/"+str(n)+"_"+str(i)+".png")):
 			it.load("res://textures_mur/"+str(n)+"_"+str(i)+".png")
