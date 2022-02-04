@@ -160,11 +160,25 @@ func _input(ev):
 	# That's why we use "not ev.echo" condition to avoid this case
 	 
 	if ev is InputEventKey and ev.scancode == KEY_LEFT and not ev.echo and left_pressed==0:
+<<<<<<< Updated upstream
 		turn_left()
 		# When the camera turns a change of frame is done
 		# We treat it with these two lines
 		posForward = posDictL[posForward]
 		posBackward = posDictL[posBackward]
+=======
+		if(posForward == 0):
+			if(lDictMaze[posCamera][5][3] != -1):	
+				turn_left()
+				posForward = posDictL[posForward]
+				posBackward = posDictL[posBackward]
+		else: 
+			if(lDictMaze[posCamera][5][posForward-1] != -1):	
+				turn_left()
+				posForward = posDictL[posForward]
+				posBackward = posDictL[posBackward]
+				
+>>>>>>> Stashed changes
 		left_pressed=1
 	elif ev is InputEventKey and ev.scancode == KEY_LEFT and not ev.echo and left_pressed==1:
 		left_pressed=0
@@ -189,11 +203,21 @@ func _input(ev):
 		forward_pressed=0
 
 	if ev is InputEventKey and ev.scancode == KEY_DOWN and not ev.echo and backward_pressed==0:
+<<<<<<< Updated upstream
 		# If there is no wall in this direction we can go backward 
 		if(lDictMaze[posCamera][5][posBackward] != -1):	
 			backward()
 			backward_pressed=1
 			posCamera = lDictMaze[posCamera][5][posBackward]
+=======
+		if(lDictMaze[posCamera][5][posBackward] != -1):
+			for i in range (2):
+				print(i)
+				turn_right()
+				posForward = posDictR[posForward]
+				posBackward = posDictR[posBackward]
+			backward_pressed=1
+>>>>>>> Stashed changes
 	elif ev is InputEventKey and ev.scancode == KEY_DOWN and not ev.echo and backward_pressed==1:
 		backward_pressed=0
 		
