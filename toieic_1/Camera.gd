@@ -161,17 +161,34 @@ func _input(ev):
 	 
 	if ev is InputEventKey and ev.scancode == KEY_LEFT and not ev.echo and left_pressed==0:
 		#print("lDict ", lDictMaze[posCamera][5][3])
-		turn_left()
-		posForward = posDictL[posForward]
-		posBackward = posDictL[posBackward]
+		if(posForward == 0):
+			if(lDictMaze[posCamera][5][3] != -1):	
+				turn_left()
+				posForward = posDictL[posForward]
+				posBackward = posDictL[posBackward]
+		else: 
+			if(lDictMaze[posCamera][5][posForward-1] != -1):	
+				turn_left()
+				posForward = posDictL[posForward]
+				posBackward = posDictL[posBackward]
+				
 		left_pressed=1
 	elif ev is InputEventKey and ev.scancode == KEY_LEFT and not ev.echo and left_pressed==1:
 		left_pressed=0
 
 	if ev is InputEventKey and ev.scancode == KEY_RIGHT and not ev.echo and right_pressed==0:
-		turn_right()
-		posForward = posDictR[posForward]
-		posBackward = posDictR[posBackward]
+		
+		if(posForward == 3):
+			if(lDictMaze[posCamera][5][0] != -1):	
+				turn_right()
+				posForward = posDictR[posForward]
+				posBackward = posDictR[posBackward]
+		else:
+			if(lDictMaze[posCamera][5][posForward+1] != -1):	
+				turn_right()
+				posForward = posDictR[posForward]
+				posBackward = posDictR[posBackward]
+				
 		right_pressed=1
 			
 	elif ev is InputEventKey and ev.scancode == KEY_RIGHT and not ev.echo and right_pressed==1:
