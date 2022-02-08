@@ -1,411 +1,395 @@
 extends Spatial
 
-var client
-var server
-var muted
-var peers
-var lTextures_mur
-var lSons
-var dictMaze
-var pos
-var idxRecord
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var client # Used to send UDP messages to vosk application
 
+var server # Used to receive UDP posts from vosk application  
+
+var muted # Inform if we need to mute the microphone or no 
+
+var lSons # sounds list 
+
+
+var dictMaze # Important : this variable contains all the information needed to identify and create the cells
+
+var pos # indicates the position of the player 
+
+var dir # Indicates the direction or orientation of the player 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	dictMaze={}
-	lTextures_mur=[]
-	lSons=[]
 	pos=0
-	#chargerTextures()
-	chargerSons()
+	dir=0
+	$Control/Label.text="NORD"
+
+	lSons=[] 
+	chargerSons() # Load sounds
+
+	# On affecte le son en fonction de la position pos courante
 	$AudioStreamPlayer.stream=lSons[pos]
-	var array=AudioServer.capture_get_device_list()
-	print(array)
-	idxRecord = AudioServer.capture_get_device()
-	print("idxRecord=",idxRecord)
-	print("get_bus_count=",AudioServer.get_bus_count())
-	print("get_bus_name=",AudioServer.get_bus_name(0))
+	
+	# At the begging the microphone is muted 
 	muted=0
+
+	# On construit le labyrinthe avec une succession d'appels à creerCellule
+	# Il y a 10 arguments à passer, résumés ici
 	#
+	# 0 / position en x
+	# 1 / position en z
+	# 2 / liste des murs 1 indique un mur, 0 pas de mur
+	# 3 / liste des textures sur nord, est, sud, ouest
+	# 4 / liste des cellules possibles à partir de cette cellule dans l'ordre N,E,S,O
+	#    si -1, alors direction impossible
+	# 5 / la cellule de base où se trouve la porte
+	#    -1 pour la cellule de base, numero de la cellule sinon
+	# 6 / la liste des cellules pour lesquelles il y a des questions devant être repondues
+	# 7 / le numéro du mur où il y a une porte 0=N, 1=E, 2=S, 3=O
+	# 8 / la réponse donnée par le joueur 0=A, 1=B, 2=C, 3=D
+	# 9 / la réponse attendue 0=A, 1=B, 2=C, 3=D
 	#
-	#                      murs      textures  desinations
-	var l=creerCellule(0,0,[-1,1,-1,-1], 0)
+	# Voici ce que les 5 appels à creerCellule représentent ici
+	#		4 - 2 - 3
+	#		|   |
+	#		0 - 1
+	#
+	# creerCellule(...) rend comme valeur de retour une liste composée de 12 élements
+	# 0 / le noeud
+	# 1 / le noeud fils au nord
+	# 2 / le noeud fils à l'est
+	# 3 / le noeud file au sud
+	# 4 / le noeud fils à l'ouest
+	# 5 / la liste des murs [nord, est,sud, ouest] 0=pas de mur, 1=mur
+	# 6 / la liste des destinations [nord, est,sud, ouest] -1=pas de destination, >=0 une destination
+	# 7 / la cellule de base de notre cellule, où se trouve la porte
+	# 8 / la liste des numéros de cellules associées à une cellule avec porte, [] si pas de porte
+	# 9 / le mur à ouvrir contenant la porte 0=X, 1=E, 2=S, 3=O
+	# 10 / la réponse donnée par le joueur dans cette cellule, -1=pas encore répondu, 0=A, 1=B, 2=C, 3=D
+	# 11 / la réponse attendue 0=A, 1=B, 2=C, 3=D
+	# On stocke cette liste comme valeur dans le dictionnaire dictMaze, la clé est le numéro de la cellule
+	#
+	#                  0 1 2         3         4            5  6       7 8  9
+	
+	#------------------ Premier Bloc --------------------#
+	var l=creerCellule(0,0,[1,-1,-1,-1],3,[],-1,-1,1, 0)
 	add_child(l[0])
 	dictMaze[0]=l
-	
-	l=creerCellule(2,0,[-1,2,-1,0], 1)
+	l=creerCellule(0,-2,[-1,2,0,-1],3,[],-1,-1,1, 1)
 	add_child(l[0])
 	dictMaze[1]=l
-	
-	l=creerCellule(4,0,[3,12,-1,1], 2)
+	l=creerCellule(2,-2,[3,-1,-1,1],3,[],-1,-1,2, 2)
 	add_child(l[0])
 	dictMaze[2]=l
-	
-	l=creerCellule(4,-2,[4,-1,2,-1], 3)
+	l=creerCellule(2,-4,[-1,-1,2,4],-1,[0,1,2],3,-1,-1, 3)
 	add_child(l[0])
 	dictMaze[3]=l
-	
-	l=creerCellule(4,-4,[7,9,3,5], 4)
+	#------------------ Deuxième Bloc --------------------#
+	l=creerCellule(0,-4,[5,3,-1,-1],7,[],-1,-1,1, 4)
 	add_child(l[0])
 	dictMaze[4]=l
-	
-	l=creerCellule(2,-4,[-1,4,-1,6], 5)
+	l=creerCellule(0,-6,[6,-1,4,-1],7,[],-1,-1,1, 5)
 	add_child(l[0])
 	dictMaze[5]=l
-	
-	l=creerCellule(0,-4,[-1,5,-1,-1], 6)
+	l=creerCellule(0,-8,[7,-1,5,-1],7,[],-1,-1,2, 6)
 	add_child(l[0])
 	dictMaze[6]=l
-	
-	l=creerCellule(4,-6,[8,-1,4,-1], 7)
+	l=creerCellule(0,-10,[8,-1,6,-1],-1,[4,5,6],3,-1,-1, 7)
 	add_child(l[0])
 	dictMaze[7]=l
-	
-	l=creerCellule(4,-8,[-1,-1,7,-1], 8)
+	#------------------ Troisième Bloc --------------------#
+	l=creerCellule(0,-8,[9,7,-1,-1],11,[],-1,-1,1, 8)
 	add_child(l[0])
 	dictMaze[8]=l
-	
-	l=creerCellule(6,-4,[-1,10,-1,4], 9)
+	l=creerCellule(0,-10,[-1,10,8,-1],11,[],-1,-1,1, 9)
 	add_child(l[0])
 	dictMaze[9]=l
-	
-	l=creerCellule(8,-4,[11,-1,-1,9], 10)
+	l=creerCellule(2,-10,[11,-1,-1,9],11,[],-1,-1,2, 10)
 	add_child(l[0])
 	dictMaze[10]=l
-	
-	l=creerCellule(8,-6,[-1,-1,10,-1], 11)
+	l=creerCellule(2,-12,[-1,-1,10,-1],-1,[8,9,10],3,-1,-1, 11)
 	add_child(l[0])
 	dictMaze[11]=l
-	
-	l=creerCellule(6,0,[-1,19,13,2], 12)
+	#------------------ Quatrième Bloc --------------------#
+	l=creerCellule(0,-12,[13,11,-1,-1],15,[],-1,-1,1, 12)
 	add_child(l[0])
 	dictMaze[12]=l
-	
-	l=creerCellule(6,2,[12,-1,14,-1], 13)
+	l=creerCellule(0,-14,[-1,14,12,-1],15,[],-1,-1,1, 13)
 	add_child(l[0])
 	dictMaze[13]=l
-	
-	l=creerCellule(6,4,[13,17,-1,15], 14)
+	l=creerCellule(2,-14,[15,-1,-1,13],15,[],-1,-1,2, 14)
 	add_child(l[0])
 	dictMaze[14]=l
-	
-	l=creerCellule(4,4,[-1,14,-1,16],15)
+	l=creerCellule(2,-16,[-1,-1,14,-1],-1,[12,13,14],3,-1,-1, 15)
 	add_child(l[0])
 	dictMaze[15]=l
-	
-	l=creerCellule(2,4,[-1,15,-1,-1], 16)
+	#------------------ Cinquième Bloc --------------------#
+	l=creerCellule(0,-16,[17,15,-1,-1],19,[],-1,-1,1, 16)
 	add_child(l[0])
 	dictMaze[16]=l
-	
-	l=creerCellule(8,4,[-1,18,-1,14], 17)
+	l=creerCellule(0,-18,[-1,18,16,-1],19,[],-1,-1,1, 17)
 	add_child(l[0])
 	dictMaze[17]=l
-	
-	l=creerCellule(10,4,[-1,-1,-1,17], 18)
+	l=creerCellule(2,-18,[19,-1,-1,17],19,[],-1,-1,2, 18)
 	add_child(l[0])
 	dictMaze[18]=l
-	
-	l=creerCellule(8,0,[-1,20,-1,12], 19)
+	l=creerCellule(2,-20,[-1,-1,18,-1],-1,[16,17,18],3,-1,-1, 19)
 	add_child(l[0])
 	dictMaze[19]=l
-	
-	l=creerCellule(10,0,[-1,21,-1,19], 20)
+	#------------------ Sixième Bloc --------------------#
+	l=creerCellule(0,-20,[21,19,-1,-1],23,[],-1,-1,1, 20)
 	add_child(l[0])
 	dictMaze[20]=l
-	
-	l=creerCellule(12,0,[22,24,-1,20], 21)
+	l=creerCellule(0,-22,[-1,22,20,-1],15,[],-1,-1,1, 21)
 	add_child(l[0])
 	dictMaze[21]=l
-	
-	l=creerCellule(12,-2,[23,-1,21,-1], 22)
+	l=creerCellule(2,-22,[23,-1,-1,21],15,[],-1,-1,2, 22)
 	add_child(l[0])
 	dictMaze[22]=l
-	
-	l=creerCellule(12,-4,[-1,-1,22,-1], 23)
+	l=creerCellule(2,-24,[-1,-1,22,-1],-1,[20,21,22],3,-1,-1, 23)
 	add_child(l[0])
 	dictMaze[23]=l
-	
-	l=creerCellule(14,0,[-1,25,-1,21], 24)
-	add_child(l[0])
-	dictMaze[24]=l
-	
-	l=creerCellule(16,0,[26,32,-1,24], 25)
-	add_child(l[0])
-	dictMaze[25]=l
-	
-	l=creerCellule(16,-2,[27,-1,25,-1], 26)
-	add_child(l[0])
-	dictMaze[26]=l
-	
-	l=creerCellule(16,-4,[-1,28,26,-1], 27)
-	add_child(l[0])
-	dictMaze[27]=l
-	
-	l=creerCellule(18,-4,[30,29,-1,27], 28)
-	add_child(l[0])
-	dictMaze[28]=l
-	
-	l=creerCellule(20,-4,[-1,-1,-1,28], 29)
-	add_child(l[0])
-	dictMaze[29]=l
-	
-	l=creerCellule(18,-6,[31,-1,28,-1], 30)
-	add_child(l[0])
-	dictMaze[30]=l
-	
-	l=creerCellule(18,-8,[-1,-1,30,-1], 31)
-	add_child(l[0])
-	dictMaze[31]=l
-	
-	l=creerCellule(18,0,[-1,41,33,25], 32)
-	add_child(l[0])
-	dictMaze[32]=l
-	
-	l=creerCellule(18,2,[32,-1,34,-1], 33)
-	add_child(l[0])
-	dictMaze[33]=l
-	
-	l=creerCellule(18,4,[33,39,35,37], 34)
-	add_child(l[0])
-	dictMaze[34]=l
-	
-	l=creerCellule(18,6,[34,-1,36,-1], 35)
-	add_child(l[0])
-	dictMaze[35]=l
-	
-	l=creerCellule(18,8,[35,-1,-1,-1], 36)
-	add_child(l[0])
-	dictMaze[36]=l
-	
-	l=creerCellule(16,4,[-1,34,-1,38], 37)
-	add_child(l[0])
-	dictMaze[37]=l
-	
-	l=creerCellule(14,4,[-1,37,-1,-1], 38)
-	add_child(l[0])
-	dictMaze[38]=l
-	
-	l=creerCellule(20,4,[-1,40,-1,34], 39)
-	add_child(l[0])
-	dictMaze[39]=l
-	
-	l=creerCellule(22,4,[-1,-1,-1,39], 40)
-	add_child(l[0])
-	dictMaze[40]=l
-	
-	l=creerCellule(20, 0,[-1, 42, -1, 32], 41)
-	add_child(l[0])
-	dictMaze[41] = l
+	#------------------ Septième Bloc --------------------#
+#	l=creerCellule(0,-24,[0,0,1,1],[25,26,-1,-1],27,[],-1,-1,1, 24)
+#	add_child(l[0])
+#	dictMaze[24]=l
+#	l=creerCellule(0,-26,[1,0,0,1],[-1,26,24,-1],15,[],-1,-1,1, 25)
+#	add_child(l[0])
+#	dictMaze[25]=l
+#	l=creerCellule(2,-26,[0,1,1,0],[27,-1,-1,25],15,[],-1,-1,2, 26)
+#	add_child(l[0])
+#	dictMaze[26]=l
+#	l=creerCellule(2,-28,[1,1,0,1],[-1,-1,26,-1],-1,[24,25,26],3,-1,-1, 27)
+#	add_child(l[0])
+#	dictMaze[27]=l
 
-	l=creerCellule(22, 0,[-1, 43, -1, 41], 42)
-	add_child(l[0])
-	dictMaze[42] = l
-
-	l=creerCellule(24, 0,[-1, 44, -1, 42], 43)
-	add_child(l[0])
-	dictMaze[43] = l
-
-	l=creerCellule(26, 0,[45, 53, -1, 43], 44)
-	add_child(l[0])
-	dictMaze[44] = l
-
-	l=creerCellule(26, -2,[46, -1, 44, -1], 45)
-	add_child(l[0])
-	dictMaze[45] = l
-
-	l=creerCellule(26, -4,[47, 51, 45, 50], 46)
-	add_child(l[0])
-	dictMaze[46] = l
-
-	l=creerCellule(26, -6,[48, -1, 46, -1], 47)
-	add_child(l[0])
-	dictMaze[47] = l
-
-	l=creerCellule(26, -8,[-1, -1, 47, -1], 48)
-	add_child(l[0])
-	dictMaze[48] = l
-
-	l=creerCellule(22, -4,[-1, 50, -1, -1], 49)
-	add_child(l[0])
-	dictMaze[49] = l
-
-	l=creerCellule(24, -4,[-1, 46, -1, 49], 50)
-	add_child(l[0])
-	dictMaze[50] = l
-
-	l=creerCellule(28, -4,[-1, 52, -1, 46], 51)
-	add_child(l[0])
-	dictMaze[51] = l
-
-	l=creerCellule(30, -4,[-1, -1, -1, 51], 52)
-	add_child(l[0])
-	dictMaze[52] = l
-
-	l=creerCellule(28, 0, [-1, 60, 54, 44], 53)
-	add_child(l[0])
-	dictMaze[53] = l
-
-	l=creerCellule(28, 2,[53, -1, 55, -1], 54)
-	add_child(l[0])
-	dictMaze[54] = l
-
-	l=creerCellule(28, 4,[54, 58, -1, 56], 55)
-	add_child(l[0])
-	dictMaze[55] = l
-
-	l=creerCellule(26, 4,[-1, 55, -1, 57], 56)
-	add_child(l[0])
-	dictMaze[56] = l
-
-	l=creerCellule(24, 4,[-1, 56, -1, -1], 57)
-	add_child(l[0])
-	dictMaze[57] = l
-
-	l=creerCellule(30, 4,[-1, 59, -1, 55], 58)
-	add_child(l[0])
-	dictMaze[58] = l
-
-	l=creerCellule(32, 4,[-1, -1, -1, 58], 59)
-	add_child(l[0])
-	dictMaze[59] = l
-
-	l=creerCellule(30, 0,[-1, 61, -1, 53], 60)
-	add_child(l[0])
-	dictMaze[60] = l
-
-	l=creerCellule(32, 0,[-1, 62, -1, 60], 61)
-	add_child(l[0])
-	dictMaze[61] = l
-
-	l=creerCellule(34, 0,[63, 65, -1, 61], 62)
-	add_child(l[0])
-	dictMaze[62] = l
-
-	l=creerCellule(34, -2,[64, -1, 62, -1], 63)
-	add_child(l[0])
-	dictMaze[63] = l
-
-	l=creerCellule(34, -4,[-1, -1, 63, -1], 64)
-	add_child(l[0])
-	dictMaze[64] = l
-
-	l=creerCellule(36, 0, [-1, 66, -1, 62], 65)
-	add_child(l[0])
-	dictMaze[65] = l
-
-	l=creerCellule(38, 0,[67, 73, -1, 65], 66)
-	add_child(l[0])
-	dictMaze[66] = l
-
-	l=creerCellule(38, -2,[68, -1, 66, -1], 67)
-	add_child(l[0])
-	dictMaze[67] = l
-
-	l=creerCellule(38, -4,[-1, 69, 67, -1], 68)
-	add_child(l[0])
-	dictMaze[68] = l
-
-	l=creerCellule(40, -4,[70, 72, -1, 68], 69)
-	add_child(l[0])
-	dictMaze[69] = l
-
-	l=creerCellule(40, -6,[71, -1, 69, -1], 70)
-	add_child(l[0])
-	dictMaze[70] = l
-
-	l=creerCellule(40, -8,[-1, -1, 70, -1], 71)
-	add_child(l[0])
-	dictMaze[71] = l
-
-	l=creerCellule(42, -4,[-1, -1, -1, 69], 72)
-	add_child(l[0])
-	dictMaze[72] = l
-
-	l=creerCellule(40, 0,[-1, -1, 74, 66], 73)
-	add_child(l[0])
-	dictMaze[73] = l
-
-	l=creerCellule(40, 2,[73, -1, 75, -1], 74)
-	add_child(l[0])
-	dictMaze[74] = l
-
-	l=creerCellule(40, 4, [74, 77, -1, 76], 75)
-	add_child(l[0])
-	dictMaze[75] = l
-
-	l=creerCellule(38, 4,[-1, 75, -1, -1], 76)
-	add_child(l[0])
-	dictMaze[76] = l
-
-	l=creerCellule(42, 4,[-1, -1, -1, 75], 77)
-	add_child(l[0])
-	dictMaze[77] = l
-
+	# Creation of the server on port 4242 
 	server = UDPServer.new()
-	peers = []
+	# The server will always listen on the port 4242 waiting for someting from his clients
 	server.listen(4242)
+	# Creation of the clien to send messages on port 4243
 	client= PacketPeerUDP.new()
-	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	# This function is called at every picture 
 	
+	# if this condition is verified : a sound is played and the microphone is muted
+	# we send a UDP request to unmeted the vosk application  
+
 	if $AudioStreamPlayer.playing==false and muted==1:
 		client.connect_to_host("127.0.0.1", 4243)
 		client.put_packet("Unmute".to_utf8())
 		muted=0
 		return
-		
-	server.poll() # Important!
-	if server.is_connection_available():
-		var peer : PacketPeerUDP = server.take_connection()
-		var pkt = peer.get_packet()
+	
+	
+	# On regarde maintenant si un message UDP est arrivé. Si oui, on décode le mot
+	# et on exécute la commande correspondante en examinant la première lettre du mot
+	# 'f' = forward
+	# 'r' = right
+	# 'l' = left
+	# 'p' = play
+	# 'a' = réponse a
+	# 'b' = réponse b
+	# 'c' = réponse c
+	# 'd' = réponse d
+	
+	server.poll() # Important! used to process new packets
+	if server.is_connection_available(): # If a packet with a new address/port combination was received on the socket.
+		var peer : PacketPeerUDP = server.take_connection() # Returns the first pending connection 
+		var pkt = peer.get_packet() # Gets a raw packet
 		print("Accepted peer: %s:%s" % [peer.get_packet_ip(), peer.get_packet_port()])
 		var pktstr=pkt.get_string_from_utf8()
 		print(len(pktstr)," ",pktstr)
-		var dir=$Camera.get_dir()
-		print ("process=",dir)
 		if (len(pktstr)>0):
-			#if (pktstr[0]=='b'):
-			#	$Camera.backward()
 			if (pktstr[0]=='f'):
-				var l5=dictMaze[pos][5]
-				if l5[dir]>=0:
-					$Camera.forward()
-					pos=l5[dir]
-					$AudioStreamPlayer.stream=lSons[pos]
-				else:
-					$AudioStreamPlayer2.play()
-					print("bonk")
+				forward()
 			if (pktstr[0]=='r'):
-				$Camera.turn_right()
+				turn_right()
 			elif (pktstr[0]=='l'):
-				$Camera.turn_left()
+				turn_left()
 			elif (pktstr[0]=='p'):
-				$AudioStreamPlayer.play()
-				client.connect_to_host("127.0.0.1", 4243)
-				client.put_packet("Mute".to_utf8())
-				muted=1
+				# In this case we have to play the equivalent sound and mute the microphone
+				play()				
 			elif (pktstr[0]=='a'):
-				print("Answer a")
+				answer_a()
 			elif (pktstr[0]=='b'):
-				print("Answer b")
+				answer_b()
 			elif (pktstr[0]=='c'):
-				print("Answer c")
+				answer_c()
 			elif (pktstr[0]=='d'):
-				print("Answer d")
-#	pass
+				answer_d()
+				
+#----------------------------------- Remarks -------------------------------------------#
 
+# First remark : 
+# The rotation is based on trigonometric circle
+# we can change our orientation by 90° using one of the right or left buttons
+# 0 in the below trigonometric circle is the location of the camera each time 
+
+	#     			  0
+	#				  |	
+	#				  |	
+	#				  |	
+	# -PI/2 ------------------------- PI/2
+	#				  |
+	#				  |
+	#				  |
+	#			      PI
+
+# Second remark :
+	# At the begening, we are pointing north by default so the variable dir is initiated at 0 
+	# Turn right mean that dir will take dir + 1
+	# Turn left mean that dir will take dir - 1
+	#
+	# 			   North = 0 
+	#				  |	
+	#				  |	
+	# West = 3 --------------- East = 1
+	# 				  |
+	#				  |	
+	#			   South = 2
+	
+	
+func turn_left():
+	# Based on the trigonometric circle turn the camera left mean add 90° = PI/2 to the y axe 
+	$Camera.rotation.y+=PI/2.0
+	dir=dir-1
+	if dir==-1:
+		dir=3
+	setLabel()
+
+func setLabel():
+	match dir:
+		0:
+			$Control/Label.text="NORD"
+		1:
+			$Control/Label.text="EST"
+		2:
+			$Control/Label.text="SUD"
+		3:
+			$Control/Label.text="OUEST"
+
+# Pour tourner la caméra à droite, on fait faire une rotation de -PI/2 à la caméra
+# et on ajuste la variable dir 0=N, 1=E, 2=S, 3=O
+func turn_right():
+	# Based on the trigonometric circle turn the camera right mean add -90° = -PI/2 to the y axe
+	$Camera.rotation.y-=PI/2.0
+	dir=dir+1
+	if dir==4:
+		dir=0
+	setLabel()
+
+# Pour faire avancer le joueur dans sa direction dir à partir de sa position pos, il faut
+# récupérer lWalls, la liste des murs (0=pas de mur, 1=mur) et la liste des directions lDirections
+# Ces listes sont accessibles aux positions 5 et 6 de la liste obtenue à partir de dictMaze[pos] 
+func forward():
+	#var lWalls=dictMaze[pos][5]
+	#var lDirections=dictMaze[pos][6]
+	# si il n'y a pas de mur dans la direction où on veut aller, alors le déplacement est valide
+	#if lWalls[dir]==0:
+	# déplacement vers 0=N, vers les z négatifs
+	if (dir==0):
+		$Camera.translation.z-=2
+	# déplacement vers 1=E, vers les x positifs
+	elif (dir==1):
+		$Camera.translation.x+=2
+	# déplacement vers 2=S, vers les z positifs
+	elif (dir==2):
+		$Camera.translation.z+=2
+	# déplacement vers 3=O, vers les x négatifs
+	elif (dir==3):
+		$Camera.translation.x-=2
+		# et on affecte pos avec la nouvelle direction
+		#pos=lDirections[dir]
+
+func backward():
+	#var lDirections=dictMaze[pos][6]
+	if (dir==0):
+		print()
+		$Camera.translation.z+=2
+	elif (dir==1):
+		$Camera.translation.x-=2
+	elif (dir==2):
+		$Camera.translation.z-=2
+	elif (dir==3):
+		$Camera.translation.x+=2
+	#pos=lDirections[dir]
+	
+# Pour jouer un son. On joue. On mute.
+func play():
+	$AudioStreamPlayer.stream=lSons[pos]
+	$AudioStreamPlayer.play()
+	client.connect_to_host("127.0.0.1", 4243)
+	client.put_packet("Mute".to_utf8())
+	muted=1
+
+func answer_a():
+	checkAnswer(0)
+	print("Answer A")
+	
+func answer_b():
+	checkAnswer(1)
+	print("Answer B")
+	
+func answer_c():
+	checkAnswer(2)
+	print("Answer C")
+	
+func answer_d():
+	checkAnswer(3)
+	print("Answer D")
+
+# Fonction permettant d'affecter une valeur de réponse à une cellule
+# C'est ici que l'on regarde si le fait d'avoir répondu à une question ouvre ou non
+# une porte
+func checkAnswer(r):
+	# L'élément 7 de la liste dictMaze[pos] représente la valeur de la cellule de base.
+	# La cellule qui contient la porte n'a pas de cellule de base, donc a une valeur de -1
+	# Dans notre exemple, la cellule 0 est celle qui contient une porte au nord, sa valeur
+	# de cellule de base contient donc -1.
+	# Les 3 questions associées à l'ouverture de cette porte sont situées aux cellules 1,2,3
+	# rassemblées dans la liste des numéros des cellules [1,2,3]
+	var celluleBase=dictMaze[pos][7]
+	var lCellules=dictMaze[celluleBase][8]
+	#
+	# L'élément 10 de la liste dictMaze[pos] contient au départ -1, pour indiquer que le joueur
+	# n'a pas encore répondu à la question en ce lieu pos. On affecte donc cet élément de liste
+	# avec la réponse r du joueur
+	dictMaze[pos][10]=r
+	#
+	# On considère que la porte est par défaut ouverte
+	var okPourOuvrir=true
+	# et on parcourt la liste des cellules associées à la cellule de base
+	for c in lCellules:
+		# soit cell une de ces cellules de numéro 1,2,3 dans notre exemple
+		var cell=dictMaze[c]
+		# si la valeur entrée par le joueur pour cette cellule (position 10)
+		# n'est pas égal à la valeur attendue (position11) alors la porte ne peut s'ouvrir
+		if cell[10]!=cell[11]:
+			okPourOuvrir=false
+	# Si toutes les cellules permettant d'ouvir la porte ont des réponses correctes
+	if (okPourOuvrir==true):
+		# on récupère la liste pour la cellule de base
+		var b=dictMaze[celluleBase]
+		# on récupère l'indice du mur où se trouve la porte (0=N, 1=E, 2=S, 3=O)
+		var porteAouvrir=b[9]
+		# Si il s'agit d'une porte au nord, on cache le mur nord, et on modifie la liste des murs
+		# pour créer une ouverture en mettant 0 au bon endroit dans la liste
+		if (porteAouvrir==0):
+			b[1].hide()
+			b[5][0]=0
+		elif (porteAouvrir==1):
+			b[2].hide()
+			b[5][1]=0
+		elif (porteAouvrir==2):
+			b[3].hide()
+			b[5][2]=0
+		elif (porteAouvrir==3):
+			b[4].hide()
+			b[5][3]=0
+	
 func chargerTextures():
 	pass
-	var it=ImageTexture.new()
-	it.load("res://textures_mur/default.jpg")
-	lTextures_mur.append(it)
 	print("Textures chargées")
 
 func chargerSons():
@@ -421,7 +405,7 @@ func chargerSons():
 	lSons.append(s)
 	print("Sons chargés")
 	
-func creerCellule(x,z,lDestinations, pos):
+func creerCellule(x,z,lDestinations,celluleBase,lCellules,porteAOuvrir,reponse,reponseAttendue, pos):
 	var n=Spatial.new()
 	n.translate(Vector3(x,0.0,z))
 	
@@ -441,9 +425,6 @@ func creerCellule(x,z,lDestinations, pos):
 	nOuest.translate(Vector3(-1.0,0.0,0.0))
 	n.add_child(nOuest)
 	
-	var route =Spatial.new()
-	route.translate(Vector3(0.0,-1.0,0.0))
-	n.add_child(route)
 	
 	var miPoteauNO=MeshInstance.new()
 	miPoteauNO.scale=Vector3(0.01,1.0,0.01)
@@ -502,7 +483,6 @@ func creerCellule(x,z,lDestinations, pos):
 			matMurNord.albedo_texture=chargerImageDefault()
 			nNord.add_child(miMurNord)
 
-
 	var miMurEst=MeshInstance.new()
 	miMurEst.rotation=Vector3(PI/2.0,-PI/2.0,0.0)
 	var meshMurEst=PlaneMesh.new()
@@ -518,7 +498,6 @@ func creerCellule(x,z,lDestinations, pos):
 			matMurEst.albedo_texture=chargerImageDefault()
 			nEst.add_child(miMurEst)
 			
-
 	var miMurSud=MeshInstance.new()
 	miMurSud.rotation=Vector3(PI/2.0,-PI,0.0)
 	var meshMurSud=PlaneMesh.new()
@@ -549,29 +528,23 @@ func creerCellule(x,z,lDestinations, pos):
 			matMurOuest.albedo_texture=chargerImageDefault()
 			nOuest.add_child(miMurOuest)
 		
-		
-	var miRoute = MeshInstance.new()
-	miRoute.rotation = Vector3(0.0,-PI/2,0.0)
-	var meshRoute = PlaneMesh.new()
-	miRoute.mesh = meshRoute
-	var matRoute = SpatialMaterial.new()
-	miRoute.set_surface_material(0,matRoute)
-	matRoute.albedo_texture=chargerImageCellule(pos, 34)
-	route.add_child(miRoute)
-		
-		
+	var lWalls
 	
-	return [n,nNord,nEst,nSud,nOuest,lDestinations]
-	pass
+	# On construit une liste très importante que l'on va ranger dans un dictionnaire
+	# 0 / le noeud
+	# 1 / le noeud fils au nord
+	# 2 / le noeud fils à l'est
+	# 3 / le noeud file au sud
+	# 4 / le noeud fils à l'ouest
+	# 5 / la liste des murs [nord, est,sud, ouest] 0=pas de mur, 1=mur
+	# 6 / la liste des destinations [nord, est,sud, ouest] -1=pas de destination, >=0 une destination
+	# 7 / la cellule de base de notre cellule, où se trouve la porte
+	# 8 / la liste des numéros de cellules associées à une cellule avec porte, [] si pas de porte
+	# 9 / le mur à ouvrir contenant la porte 0=X, 1=E, 2=S, 3=O
+	# 10 / la réponse donnée par le joueur dans cette cellule, -1=pas encore répondu, 0=A, 1=B, 2=C, 3=D
+	# 11 / la réponse attendue 0=A, 1=B, 2=C, 3=D
+	return [n,nNord,nEst,nSud,nOuest,lWalls,lDestinations,celluleBase,lCellules,porteAOuvrir,reponse,reponseAttendue]
 
-
-func _on_Button_pressed():
-	print("pressed")
-	$AudioStreamPlayer.play()
-	pass # Replace with function body.
-	
-func getDictMaze(): 
-	return dictMaze
 
 func chargerImageCellule(n, i): 
 	var it=ImageTexture.new()
@@ -586,14 +559,11 @@ func chargerImageCellule(n, i):
 			it.load("res://textures_mur/"+str(n)+"_"+str(i)+".png")
 			
 	return it
-	
-	
+		
 func chargerImageDefault():
 	var it=ImageTexture.new()
 	it.load("res://textures_mur/default.jpg")
 	return it
-	
-	
-	
-	
-	
+
+func getDictMaze(): 
+	return dictMaze

@@ -15,7 +15,8 @@ near = 0.1
 script = ExtResource( 2 )
 
 [node name="OmniLight" type="OmniLight" parent="Camera"]
-omni_range = 43.7399
+light_energy = 2.0
+light_specular = 2.031
 
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
@@ -24,17 +25,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="Control"]
-margin_left = 23.0
-margin_top = 20.0
-margin_right = 61.0
-margin_bottom = 40.0
-text = "Play"
+[node name="Label" type="Label" parent="Control"]
+margin_left = 629.0
+margin_top = 757.0
+margin_right = 669.0
+margin_bottom = 771.0
+text = "NORD"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
-
-[connection signal="pressed" from="Control/Button" to="." method="_on_Button_pressed"]
