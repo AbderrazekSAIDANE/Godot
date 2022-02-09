@@ -96,18 +96,21 @@ func _ready():
 	add_child(l[0])
 	dictMaze[7]=l
 	#------------------ Troisième Bloc --------------------#
-	l=creerCellule(0,-8,[9,7,-1,-1],11,[],-1,-1,1, 8)
+	l=creerCellule(0,-12,[9,-1,7,-1],12,[],-1,-1,1, 8)
 	add_child(l[0])
 	dictMaze[8]=l
-	l=creerCellule(0,-10,[-1,10,8,-1],11,[],-1,-1,1, 9)
+	l=creerCellule(0,-14,[-1,-1,8,10],12,[],-1,-1,1, 9)
 	add_child(l[0])
 	dictMaze[9]=l
-	l=creerCellule(2,-10,[11,-1,-1,9],11,[],-1,-1,2, 10)
+	l=creerCellule(-2,-14,[11,9,-1,-1],12,[],-1,-1,2, 10)
 	add_child(l[0])
 	dictMaze[10]=l
-	l=creerCellule(2,-12,[-1,-1,10,-1],-1,[8,9,10],3,-1,-1, 11)
+	l=creerCellule(-2,-16,[-1,-1,10,12],12,[],3,-1,-1, 11)
 	add_child(l[0])
 	dictMaze[11]=l
+	l=creerCellule(-4,-16,[-1,11,-1,-1],-1,[8,9,10,11],3,-1,-1, 12)
+	add_child(l[0])
+	dictMaze[12]=l
 	#------------------ Quatrième Bloc --------------------#
 	l=creerCellule(0,-12,[13,11,-1,-1],15,[],-1,-1,1, 12)
 	add_child(l[0])

@@ -190,6 +190,7 @@ func _input(ev):
 	elif ev is InputEventKey and ev.scancode == KEY_N and not ev.echo and down_pressed==1:
 		down_pressed = 0
 	
+	print(posCamera)
 
 
 

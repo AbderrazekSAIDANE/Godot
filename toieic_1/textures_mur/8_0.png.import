@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/brique1.jpg-ed3b8ec801be57d198d8690e47c50239.stex"
+path="res://.import/8_0.png-8901edf9f856eb04c0cf455a09943236.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures_mur/brique1.jpg"
-dest_files=[ "res://.import/brique1.jpg-ed3b8ec801be57d198d8690e47c50239.stex" ]
+source_file="res://textures_mur/8_0.png"
+dest_files=[ "res://.import/8_0.png-8901edf9f856eb04c0cf455a09943236.stex" ]
 
 [params]
 
