@@ -108,61 +108,33 @@ func _ready():
 	l=creerCellule(-2,-16,[-1,-1,10,12],12,[],3,-1,-1, 11)
 	add_child(l[0])
 	dictMaze[11]=l
-	l=creerCellule(-4,-16,[-1,11,-1,-1],-1,[8,9,10,11],3,-1,-1, 12)
+	l=creerCellule(-4,-16,[13,11,-1,-1],-1,[8,9,10,11],3,-1,-1, 12)
 	add_child(l[0])
 	dictMaze[12]=l
 	#------------------ Quatrième Bloc --------------------#
-	l=creerCellule(0,-12,[13,11,-1,-1],15,[],-1,-1,1, 12)
-	add_child(l[0])
-	dictMaze[12]=l
-	l=creerCellule(0,-14,[-1,14,12,-1],15,[],-1,-1,1, 13)
+	l=creerCellule(-4,-18,[14,-1,12,-1],15,[],-1,-1,1, 13)
 	add_child(l[0])
 	dictMaze[13]=l
-	l=creerCellule(2,-14,[15,-1,-1,13],15,[],-1,-1,2, 14)
+	l=creerCellule(-4,-20,[15,-1,13,-1],15,[],-1,-1,1, 14)
 	add_child(l[0])
 	dictMaze[14]=l
-	l=creerCellule(2,-16,[-1,-1,14,-1],-1,[12,13,14],3,-1,-1, 15)
+	l=creerCellule(-4,-22,[-1,16,14,-1],15,[],-1,-1,2, 15)
 	add_child(l[0])
 	dictMaze[15]=l
 	#------------------ Cinquième Bloc --------------------#
-	l=creerCellule(0,-16,[17,15,-1,-1],19,[],-1,-1,1, 16)
+	l=creerCellule(-2,-22,[-1,16,-1,15],19,[],-1,-1,1, 16)
 	add_child(l[0])
 	dictMaze[16]=l
-	l=creerCellule(0,-18,[-1,18,16,-1],19,[],-1,-1,1, 17)
+	l=creerCellule(0,-22,[-1,18,-1,16],19,[],-1,-1,1, 17)
 	add_child(l[0])
 	dictMaze[17]=l
-	l=creerCellule(2,-18,[19,-1,-1,17],19,[],-1,-1,2, 18)
+	l=creerCellule(2,-22,[-1,19,-1,17],19,[],-1,-1,2, 18)
 	add_child(l[0])
 	dictMaze[18]=l
-	l=creerCellule(2,-20,[-1,-1,18,-1],-1,[16,17,18],3,-1,-1, 19)
+	l=creerCellule(4,-22,[-1,-1,-1,18],-1,[16,17,18],3,-1,-1, 19)
 	add_child(l[0])
 	dictMaze[19]=l
 	#------------------ Sixième Bloc --------------------#
-	l=creerCellule(0,-20,[21,19,-1,-1],23,[],-1,-1,1, 20)
-	add_child(l[0])
-	dictMaze[20]=l
-	l=creerCellule(0,-22,[-1,22,20,-1],15,[],-1,-1,1, 21)
-	add_child(l[0])
-	dictMaze[21]=l
-	l=creerCellule(2,-22,[23,-1,-1,21],15,[],-1,-1,2, 22)
-	add_child(l[0])
-	dictMaze[22]=l
-	l=creerCellule(2,-24,[-1,-1,22,-1],-1,[20,21,22],3,-1,-1, 23)
-	add_child(l[0])
-	dictMaze[23]=l
-	#------------------ Septième Bloc --------------------#
-#	l=creerCellule(0,-24,[0,0,1,1],[25,26,-1,-1],27,[],-1,-1,1, 24)
-#	add_child(l[0])
-#	dictMaze[24]=l
-#	l=creerCellule(0,-26,[1,0,0,1],[-1,26,24,-1],15,[],-1,-1,1, 25)
-#	add_child(l[0])
-#	dictMaze[25]=l
-#	l=creerCellule(2,-26,[0,1,1,0],[27,-1,-1,25],15,[],-1,-1,2, 26)
-#	add_child(l[0])
-#	dictMaze[26]=l
-#	l=creerCellule(2,-28,[1,1,0,1],[-1,-1,26,-1],-1,[24,25,26],3,-1,-1, 27)
-#	add_child(l[0])
-#	dictMaze[27]=l
 
 	# Creation of the server on port 4242 
 	server = UDPServer.new()
