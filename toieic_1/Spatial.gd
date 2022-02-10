@@ -8,12 +8,15 @@ var muted # Inform if we need to mute the microphone or no
 
 var lSons # sounds list 
 
-
 var dictMaze # Important : this variable contains all the information needed to identify and create the cells
 
 var pos # indicates the position of the player 
 
 var dir # Indicates the direction or orientation of the player 
+
+var sound2Check 
+
+var s
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,10 +26,11 @@ func _ready():
 	$Control/Label.text="NORD"
 
 	lSons=[] 
-	chargerSons() # Load sounds
+	
+	# chargerSons() # Load sounds
 
 	# On affecte le son en fonction de la position pos courante
-	$AudioStreamPlayer.stream=lSons[pos]
+	# $AudioStreamPlayer.stream=lSons[pos]
 	
 	# At the begging the microphone is muted 
 	muted=0
@@ -70,16 +74,17 @@ func _ready():
 	#                  0 1 2         3         4            5  6       7 8  9
 	
 	#------------------ Premier Bloc --------------------#
-	var l=creerCellule(0,0,[1,-1,-1,-1],3,[],-1,-1,1, 0)
+	#											   pos
+	var l=creerCellule(0,0,[1,-1,-1,-1],-1,[],-1,1,1, 0)
 	add_child(l[0])
 	dictMaze[0]=l
-	l=creerCellule(0,-2,[-1,2,0,-1],3,[],-1,-1,1, 1)
+	l=creerCellule(0,-2,[-1,2,0,-1],-1,[],-1,1,1, 1)
 	add_child(l[0])
 	dictMaze[1]=l
-	l=creerCellule(2,-2,[3,-1,-1,1],3,[],-1,-1,2, 2)
+	l=creerCellule(2,-2,[3,-1,-1,1],-1,[],-1,2,2, 2)
 	add_child(l[0])
 	dictMaze[2]=l
-	l=creerCellule(2,-4,[-1,-1,2,4],-1,[0,1,2],3,-1,-1, 3)
+	l=creerCellule(2,-4,[-1,-1,2,4],3,[3],3,-1,0, 3)
 	add_child(l[0])
 	dictMaze[3]=l
 	#------------------ Deuxième Bloc --------------------#
@@ -149,7 +154,7 @@ func _process(delta):
 	
 	# if this condition is verified : a sound is played and the microphone is muted
 	# we send a UDP request to unmeted the vosk application  
-
+	
 	if $AudioStreamPlayer.playing==false and muted==1:
 		client.connect_to_host("127.0.0.1", 4243)
 		client.put_packet("Unmute".to_utf8())
@@ -280,7 +285,6 @@ func forward():
 func backward():
 	#var lDirections=dictMaze[pos][6]
 	if (dir==0):
-		print()
 		$Camera.translation.z+=2
 	elif (dir==1):
 		$Camera.translation.x-=2
@@ -292,11 +296,20 @@ func backward():
 	
 # Pour jouer un son. On joue. On mute.
 func play():
-	$AudioStreamPlayer.stream=lSons[pos]
-	$AudioStreamPlayer.play()
-	client.connect_to_host("127.0.0.1", 4243)
-	client.put_packet("Mute".to_utf8())
-	muted=1
+	print($Camera.posCamera, dir)
+	sound2Check = File.new()
+	if (sound2Check.file_exists("res://sons/"+str($Camera.posCamera)+"_"+str(dir)+".wav")):
+		$AudioStreamPlayer.stream=load("res://sons/"+str($Camera.posCamera)+"_"+str(dir)+".wav")
+		$AudioStreamPlayer.play()
+		client.connect_to_host("127.0.0.1", 4243)
+		client.put_packet("Mute".to_utf8())
+		muted=1
+		
+#	$AudioStreamPlayer.stream=lSons[pos]
+#	$AudioStreamPlayer.play()
+#	client.connect_to_host("127.0.0.1", 4243)
+#	client.put_packet("Mute".to_utf8())
+#	muted=1
 
 func answer_a():
 	checkAnswer(0)
@@ -449,7 +462,7 @@ func creerCellule(x,z,lDestinations,celluleBase,lCellules,porteAOuvrir,reponse,r
 	miMurNord.mesh=meshMurNord
 	var matMurNord=SpatialMaterial.new()
 	miMurNord.set_surface_material(0,matMurNord)
-	
+
 	if (file2Check.file_exists("res://textures_mur/"+str(pos)+"_"+str(0)+".png")):
 		matMurNord.albedo_texture=chargerImageCellule(pos, 0)
 		nNord.add_child(miMurNord)

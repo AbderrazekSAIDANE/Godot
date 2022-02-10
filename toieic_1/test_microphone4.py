@@ -14,18 +14,19 @@ import difflib
 import threading
 import time
 
-# Par rapport au programme test_microphone.py original, nous avons besoin
-# d'un serveur UDP dans cette application pour recevoir les messages de Mute et UnMute
+# The communication between Godot and Vosk application need to use a UDP server to receive all pockets
 serverAddressPort=("127.0.0.1", 4242)
 UDPClientSocket=socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-bufferSize=1024
+bufferSize=1024 # Set the size of buffer
 messageFromGodot=""
-# La variable globale muted est tres importante. Si le thread de reception
-# de message UDP recoit un ordre Mute alors mutes=1, on desactive temporairement vosk
-# Si le message recu est UnMute, alors muted repasse a 0
+
+# The variable "muted" is very important, because if the thread receive an order with Mute so the
+# variable mute is set to 1 and the application vosk is temporary desactivate.
+# else the variable mute is set to 0
 muted=0
 
-# La tres importante liste des mots connus et attendus
+# List of importants words
+# We try to detect each of the important word for our speech process
 knownWords=[["a","a"],["hey","a"],["b","b"],["be","b"],["c","c"],["see","c"],["dee","d"],["d","d"],["the","d"],["left","left"],["right","right"],["forward","forward"],["play","play"],["stop","stop"]]
 
 # La fonction de thread permettant de recevoir les messages UDP sur le port 4243
