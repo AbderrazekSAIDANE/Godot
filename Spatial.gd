@@ -21,12 +21,22 @@ var file2Check # Used to check if we have picture that refer to a wall
 
 var sound2Check # Used to check if we have sound that refer to question for a picture
 
-var premierPassage # Variable used to play statement for just one time 
+var lancementStatement # Variable used to play statement for just one time 
 
+
+var localisationQuestion
+var turnRight
+var turnLeft
+var played
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Initilisation of varibles
-	premierPassage = 0
+	lancementStatement = 0
+	turnRight = 0 
+	turnLeft = 0
+	played = 0
+	localisationQuestion = [[3,0,0],[6,0,0],[12,3,0],[15,0,0],[18,1,0]]
+	
 	file2Check = File.new() 
 	dictMaze={}
 	pos=0
@@ -68,7 +78,7 @@ func _ready():
 	l=creerCellule(0,-4,[0,0,1,1],[0,1,2,3],[5,3,-1,-1],-1,[],-1,-1,-1, 4)
 	add_child(l[0])
 	dictMaze[4]=l
-	l=creerCellule(0,-6,[0,1,0,1],[0,1,2,3],[6,-1,4,-1],-1,[],-1,-1,1, 5)
+	l=creerCellule(0,-6,[0,1,0,1],[0,1,2,3],[6,-1,4,-1],-1,[],-1,-1,-1, 5)
 	add_child(l[0])
 	dictMaze[5]=l
 	l=creerCellule(0,-8,[0,1,0,1],[0,1,2,3],[7,-1,5,-1],7,[],-1,-1,1, 6)
@@ -78,13 +88,13 @@ func _ready():
 	add_child(l[0])
 	dictMaze[7]=l
 	#------------------ Troisième Bloc --------------------#
-	l=creerCellule(0,-12,[0,1,0,1],[0,1,2,3],[9,-1,7,-1],-1,[],-1,-1,1, 8)
+	l=creerCellule(0,-12,[0,1,0,1],[0,1,2,3],[9,-1,7,-1],-1,[],-1,-1,-1, 8)
 	add_child(l[0])
 	dictMaze[8]=l
-	l=creerCellule(0,-14,[1,1,0,0],[0,1,2,3],[-1,-1,8,10],-1,[],-1,-1,1, 9)
+	l=creerCellule(0,-14,[1,1,0,0],[0,1,2,3],[-1,-1,8,10],-1,[],-1,-1,-1, 9)
 	add_child(l[0])
 	dictMaze[9]=l
-	l=creerCellule(-2,-14,[0,0,1,1],[0,1,2,3],[11,9,-1,-1],-1,[],-1,-1,2, 10)
+	l=creerCellule(-2,-14,[0,0,1,1],[0,1,2,3],[11,9,-1,-1],-1,[],-1,-1,-1, 10)
 	add_child(l[0])
 	dictMaze[10]=l
 	l=creerCellule(-2,-16,[1,1,0,0],[0,1,2,3],[-1,-1,10,12],-1,[],-1,-1,-1, 11)
@@ -94,20 +104,20 @@ func _ready():
 	add_child(l[0])
 	dictMaze[12]=l
 	#------------------ Quatrième Bloc --------------------#
-	l=creerCellule(-4,-18,[0,1,0,1],[0,1,2,3],[14,-1,12,-1],-1,[],-1,-1,1, 13)
+	l=creerCellule(-4,-18,[0,1,0,1],[0,1,2,3],[14,-1,12,-1],-1,[],-1,-1,-1, 13)
 	add_child(l[0])
 	dictMaze[13]=l
-	l=creerCellule(-4,-20,[0,1,0,1],[0,1,2,3],[15,-1,13,-1],-1,[],-1,-1,1, 14)
+	l=creerCellule(-4,-20,[0,1,0,1],[0,1,2,3],[15,-1,13,-1],-1,[],-1,-1,-1, 14)
 	add_child(l[0])
 	dictMaze[14]=l
 	l=creerCellule(-4,-22,[1,1,0,1],[0,1,2,3],[-1,16,14,-1],15,[15],1,-1,0, 15)
 	add_child(l[0])
 	dictMaze[15]=l
 	#------------------ Cinquième Bloc --------------------#
-	l=creerCellule(-2,-22,[1,0,1,0],[0,1,2,3],[-1,17,-1,15],-1,[],-1,-1,1, 16)
+	l=creerCellule(-2,-22,[1,0,1,0],[0,1,2,3],[-1,17,-1,15],-1,[],-1,-1,-1, 16)
 	add_child(l[0])
 	dictMaze[16]=l
-	l=creerCellule(0,-22,[1,0,1,0],[0,1,2,3],[-1,18,-1,16],-1,[],-1,-1,1, 17)
+	l=creerCellule(0,-22,[1,0,1,0],[0,1,2,3],[-1,18,-1,16],-1,[],-1,-1,-1, 17)
 	add_child(l[0])
 	dictMaze[17]=l
 	l=creerCellule(2,-22,[1,1,1,0],[0,1,2,3],[-1,-1,19,17],18,[18],2,-1,2, 18)
@@ -128,39 +138,57 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# This function is called at every picture 
-	
+
 	# At pictures in position 3 with direction 0 we play statement.wav
-	# For one time  
-	if((pos == 3 and dir == 0) and premierPassage==0):
-		$AudioStreamPlayer.stream=load("res://sons/statement.wav")
+	# For one time
+	played = 0  
+	
+	if((pos == 0 and dir == 0) and lancementStatement==0):
+		#$AudioStreamPlayer.stream=load("res://sons/statement.wav")
+		#$AudioStreamPlayer.play()
+		client.connect_to_host("127.0.0.1", 4243)
+		client.put_packet("Mute".to_utf8())
+		muted=1
+		lancementStatement = 1
+	
+	if(pos == 1 and dir == 0 and turnRight == 0):
+		$AudioStreamPlayer.stream=load("res://sons/right.wav")
 		$AudioStreamPlayer.play()
 		client.connect_to_host("127.0.0.1", 4243)
 		client.put_packet("Mute".to_utf8())
 		muted=1
-		premierPassage = 1
+		turnRight = 1
 		
+	if(pos == 2 and dir == 1 and turnLeft == 0):
+		$AudioStreamPlayer.stream=load("res://sons/left.wav")
+		$AudioStreamPlayer.play()
+		client.connect_to_host("127.0.0.1", 4243)
+		client.put_packet("Mute".to_utf8())
+		muted=1
+		turnLeft = 1
+
+		
+	print(pos, dir)
+	for i in range (len(localisationQuestion)):
+		if(pos == localisationQuestion[i][0] and dir ==localisationQuestion[i][1] and localisationQuestion[i][2] == 0):
+			$AudioStreamPlayer.stream=load("res://sons/HereAquestion.wav")
+			$AudioStreamPlayer.play()
+			client.connect_to_host("127.0.0.1", 4243)
+			client.put_packet("Mute".to_utf8())
+			muted=1
+			localisationQuestion[i][2] = 1
+			pass 
 	# if this condition is verified : a sound is played and the microphone is muted
 	# we send a UDP request to unmeted the vosk application  	
-	if $AudioStreamPlayer.playing==false and muted==1:
+	if ($AudioStreamPlayer.playing==false and muted==1):
 		client.connect_to_host("127.0.0.1", 4243)
 		client.put_packet("Unmute".to_utf8())
 		muted=0
 		return
 	
-	# On regarde maintenant si un message UDP est arrivé. Si oui, on décode le mot
-	# et on exécute la commande correspondante en examinant la première lettre du mot
-	# 'f' = forward
-	# 'r' = right
-	# 'l' = left
-	# 'p' = play
-	# 'a' = réponse a
-	# 'b' = réponse b
-	# 'c' = réponse c
-	# 'd' = réponse d
-	
 	server.poll() # Important! used to process new packets
 	if server.is_connection_available(): # If a packet with a new address/port combination was received on the socket.
-		var peer : PacketPeerUDP = server.take_connection # Returns the first pending connection 
+		var peer : PacketPeerUDP = server.take_connection() # Returns the first pending connection 
 		var pkt = peer.get_packet() # Gets a raw packet
 		print("Accepted peer: %s:%s" % [peer.get_packet_ip(), peer.get_packet_port()])
 		var pktstr=pkt.get_string_from_utf8()
@@ -175,13 +203,13 @@ func _process(delta):
 			elif (pktstr[0]=='p'):
 				# In this case we have to play the equivalent sound and mute the microphone
 				play()
-			elif (pktstr[0]=='a'):
+			elif (pktstr[0]=='a' and dictMaze[pos][11] !=-1 and played == 1):
 				answer_a()
-			elif (pktstr[0]=='b'):
+			elif (pktstr[0]=='b' and dictMaze[pos][11]!=-1 and played == 1):
 				answer_b()
-			elif (pktstr[0]=='c'):
+			elif (pktstr[0]=='c' and dictMaze[pos][11]!=-1 and played == 1):
 				answer_c()
-			elif (pktstr[0]=='d'):
+			elif (pktstr[0]=='d' and dictMaze[pos][11]!=-1 and played == 1):
 				answer_d()
 #----------------------------------- Remarks -------------------------------------------#
 
@@ -277,6 +305,31 @@ func forward():
 
 		pos=lDirections[dir]
 
+func backward():
+	print(dictMaze[0])
+	var lWalls=dictMaze[pos][5]
+	var lDirections=dictMaze[pos][6]
+
+	# si il n'y a pas de mur dans la direction où on veut aller, alors le déplacement est valide
+	# If there is no wall in our direction we can move
+	#  Because we made some modifications we need to check if in this direction there is a way 
+
+	if (lDirections[dir-2]!=-1 and lWalls[dir-2]== 0):
+
+		if (dir==0):
+			$Camera.translation.z+=2
+
+		elif (dir==1):
+			$Camera.translation.x-=2
+
+		elif (dir==2):
+			$Camera.translation.z-=2
+
+		elif (dir==3):
+			$Camera.translation.x+=2
+
+		pos=lDirections[dir-2]
+
 # When we play a sound we have to mute our microphone
 func play():
 	sound2Check = File.new()
@@ -286,6 +339,7 @@ func play():
 		client.connect_to_host("127.0.0.1", 4243)
 		client.put_packet("Mute".to_utf8())
 		muted=1
+		played = 1 
 
 func answer_a():
 	checkAnswer(0)
@@ -307,11 +361,15 @@ func answer_d():
 # If our answers are good and right our wall of a cell with be hide and we can go further
 func checkAnswer(r):
 	var celluleBase=dictMaze[pos][7] # Element 7 of dictMaze is for the cell who contain a door
+	
 	# if celluleBase = -1 it mean this cell don't contain a door
-	var lCellules=dictMaze[celluleBase][8] # Element 8 of dictMaze contain a list of cells who contain a question
+	var lCellules=dictMaze[celluleBase][8] # Element 8 of dictMaze contain aaa list of cells who contain a question
 	# that the player need to answer to go further in the game 
 	# Element 10 is the answer of the player, if the element is -1 then the player did not answer
+	print(celluleBase, lCellules)
+	
 	dictMaze[pos][10]=r
+	
 	var okPourOuvrir=true
 	# and we go through the list of cells associated with the base cell
 	for c in lCellules:
@@ -509,3 +567,6 @@ func chargerImageDefault():
 
 func getDictMaze(): 
 	return dictMaze
+
+func getPos():
+	return pos
